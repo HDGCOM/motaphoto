@@ -1,0 +1,31 @@
+/*
+Theme Name: motaphoto
+Description: Un thème WordPress personnalisé créé à partir de zéro.
+Author: Akim
+Version: 1.0
+*/
+
+@font-face {
+    font-family: 'Space mono';
+    src: url(fonts/SpaceMono-Regular.ttf) format('truetype'),
+         url(fonts/SpaceMono-Bold.ttf) format('truetype'),
+         url(fonts/SpaceMono-Italic.ttf) format('truetype'),
+         url(fonts/SpaceMono-BoldItalic.ttf) format('truetype');
+}
+body{
+    font-family: 'Space Mono', sans-serif;
+    font-size: 16px;
+}
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+li{
+    display: inline;
+    margin-right: 20px;
+}
+a{
+    text-decoration: none;
+
+}
