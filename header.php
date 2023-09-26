@@ -10,7 +10,7 @@
         <div class="container">
             <div class="header-logo">
                 <a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/logo.png" alt="Logo du site">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/Motaphoto.png" alt="Logo du site">
                 </a>
             </div>
             <nav class="header-menu">

@@ -1,9 +1,8 @@
 
 </main>
 <footer>
-    <div class="container">
+    <div class="container footer">
         <div class="footer-content">
-            <p>&copy; <?php echo date('Y'); ?> Motaphoto</p>
             <nav class="footer-menu">
                 <?php
                 wp_nav_menu(array(
