@@ -52,13 +52,14 @@ a{
     width: 30%;
     margin: 50px auto;
     font-size: 14px;
-    padding: 50px 0;
+    /*padding: 50px 0;*/
     background-color: #fff;
     border: 5px solid;
 }
 .js{
     display: flex;
     justify-content: center;
+    margin: 50px auto;
 }
 
 .overlay-modal{
@@ -86,4 +87,16 @@ a{
 .wpcf7-form p{
     display: flex;
     flex-direction: column;
+}
+.close{
+    display: block !important;
+    font-size: 2em;
+    float: right;
+    margin: 10px;
+    cursor:pointer;
+    transition:all 0.4s ease;
+}
+.close:hover{
+    color: #e00000 ;
+    transform:rotate(270deg);
 }

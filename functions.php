@@ -26,18 +26,5 @@
   }
   
   add_filter('wp_nav_menu_items', 'ajouter_contact_au_menu', 10, 2);
-   
-  //Font awesome
-  function enqueue_font_awesome() {
-    // Définissez l'URL de votre thème local où se trouve le fichier Font Awesome CSS
-    $theme_directory = get_template_directory_uri();
-
-    // Enregistrez Font Awesome CSS depuis votre thème local
-    wp_enqueue_style('font-awesome', $theme_directory . 'css/fontawesome.css', array(), '1.0', 'all');
-}
-
-add_action('wp_enqueue_scripts', 'enqueue_font_awesome');
-
-
 
 ?>

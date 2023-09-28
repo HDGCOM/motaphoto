@@ -41,16 +41,9 @@ jQuery(document).ready(function() {
         });
     
         // Fermer la modal lorsque le bouton de fermeture est cliqué
-        $('#close-modal').click(function() {
-            $('#open-modal').fadeOut();
-        });
-    
-        // Fermer la modal lorsque l'utilisateur clique en dehors de la modal
-       /* $(document).on('click', function(e) {
-            if ($(e.target).closest('#open-modal').length === 0) {
-                $('#open-modal').fadeOut();
-            }
-        });*/
+        $('.close').click(function(){
+			$(this).closest('.overlay-modal').hide(); /*$(this).parent().hide();*/
+		});
     });
      
    
