@@ -11,7 +11,8 @@
    add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
     function theme_enqueue_styles() {
       wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-      wp_enqueue_script('custom-script', get_template_directory_uri() . 'scripts/script.js', array('jquery'), '1.0', true);
+      wp_enqueue_script('custom-script', get_template_directory_uri() . '/scripts/script.js', array('jquery'), '1.0', true);
+      wp_enqueue_script('jquery');
     }
 
     //Modale
@@ -19,13 +20,24 @@
       // Vérifiez s'il s'agit du menu "primary"
       if ($args->theme_location == 'primary') {
           // Ajoutez un élément "Contact" à la fin du menu avec une classe "open-modal"
-          $items .= '<li class="open-modal"><a href="#">Contact</a></li>';
+          $items .= '<li ><a id="open-modal-link" href="#">Contact</a></li>';
       }
       return $items;
   }
   
   add_filter('wp_nav_menu_items', 'ajouter_contact_au_menu', 10, 2);
-  
+   
+  //Font awesome
+  function enqueue_font_awesome() {
+    // Définissez l'URL de votre thème local où se trouve le fichier Font Awesome CSS
+    $theme_directory = get_template_directory_uri();
+
+    // Enregistrez Font Awesome CSS depuis votre thème local
+    wp_enqueue_style('font-awesome', $theme_directory . 'css/fontawesome.css', array(), '1.0', 'all');
+}
+
+add_action('wp_enqueue_scripts', 'enqueue_font_awesome');
+
 
 
 ?>

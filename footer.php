@@ -1,5 +1,6 @@
 
 <footer>
+    <?php get_template_part('templates_part/modale', 'template'); ?>
     <div class="container footer">
         <div class="footer-content">
             <nav class="footer-menu">
