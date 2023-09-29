@@ -34,6 +34,7 @@ jQuery(document).ready(function() {
 
 (function($) {
     jQuery(document).ready(function($) {
+        
         // Ouvrir la modal lorsque le lien est cliqué
         $('#open-modal-link').click(function(e) {
             e.preventDefault(); // Empêche le lien de suivre le lien href
@@ -42,12 +43,11 @@ jQuery(document).ready(function() {
     
         // Fermer la modal lorsque le bouton de fermeture est cliqué
         $('.close').click(function(){
-			$(this).closest('.overlay-modal').hide(); /*$(this).parent().hide();*/
+			$(this).closest('.modal').hide();
 		});
     });
-     
-   
 })(jQuery);
     
+
 
 
