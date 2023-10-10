@@ -47,6 +47,8 @@ a{
 .footer{
     border-top: solid 1px #000;
 }
+
+/*Modale*/
 .modal{
     display: none;
     width: 30%;
@@ -99,4 +101,31 @@ a{
 .close:hover{
     color: #e00000 ;
     transform:rotate(270deg);
+}
+
+/*Hero header*/
+.hero{
+    position: relative;
+    height: auto;
+}
+.hero-title>h1{
+    position: absolute;
+    font-size: 96px;
+    font-weight: bold;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgb(255, 255, 255);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    width: max-content;
+
+}
+.hero-image img{
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    text-align: center;
 }
