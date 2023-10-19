@@ -12,7 +12,13 @@
     function theme_enqueue_styles() {
       wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
       wp_enqueue_script('custom-script', get_template_directory_uri() . '/scripts/script.js', array('jquery'), '1.0', true);
-      wp_enqueue_script('jquery');
+
+      // Localiser les variables AJAX pour le script
+      wp_localize_script('custom-script', 'custom_script_params', array(
+        'ajaxurl' => admin_url('admin-ajax.php'), // L'URL de l'endpoint AJAX
+        'nonce' => wp_create_nonce('custom_script_nonce')
+      ));
+
     }
 
     //Modale
@@ -26,5 +32,68 @@
   }
   
   add_filter('wp_nav_menu_items', 'ajouter_contact_au_menu', 10, 2);
+
+  //Ajax function
+
+  function charger_plus_d_images() {
+      check_ajax_referer('custom_script_nonce', 'security');
+
+        $offset= $_POST['offset'];
+        $args = array(
+         'post_type' => 'photo', 
+         'posts_per_page' => 8,
+         'offset' => $offset, 
+        );
+
+        $nouvelles_images_query = new WP_Query($args);
+        
+        
+        if ($nouvelles_images_query->have_posts()) :
+            while ($nouvelles_images_query->have_posts()) : $nouvelles_images_query->the_post();
+                
+                $image_id = get_post_thumbnail_id();
+                $reference = get_field('reference', $image_id);
+                $categories = get_the_terms(get_the_ID(), 'categorie');
+              ?>
+
+              <div class="container-img">
+                  <?php the_post_thumbnail('large'); ?>
+                  <div class="overlay">
+                      <a href="lien_vers_votre_page_de_redirection">
+                          <i class="fas fa-eye"></i>
+                      </a>
+                      <a href="#" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>">
+                          <i class="fas fa-square"></i>
+                      </a>
+                      <div class="infos">
+                          <div class="left-ref"><?php echo $reference; ?></div>
+                          <div class="right-cat">
+                              <?php
+                              if ($categories) {
+                                  foreach ($categories as $category) {
+                                      echo '<a href="' . get_term_link($category) . '">' . $category->name . '</a>';
+                                  }
+                              }
+                              ?>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              
+
+              <?php
+
+              endwhile;
+        endif; 
+        
+
+        wp_reset_postdata();
+        die();
+  }
+
+add_action('wp_ajax_charger_plus_d_images', 'charger_plus_d_images');
+add_action('wp_ajax_nopriv_charger_plus_d_images', 'charger_plus_d_images');
+
 
 ?>

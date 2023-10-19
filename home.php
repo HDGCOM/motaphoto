@@ -27,25 +27,94 @@ get_header()
                 </div>        
             </div>
             <div class="photos">
-                <?php 
+                <?php
                     $args = array(
-                        'post_type' => 'attachment',
-                        'post_mime_type' => 'image',
-                        'posts_per_page' => 8, // Nombre d'images à afficher par page
-                        //'paged' => $_POST['page'], // Page actuelle
-                     );
-                     
-                     $images = get_posts($args);
+                        'post_type' => 'photo', // Remplacez 'photo' par le slug de votre type de publication personnalisé
+                        'posts_per_page' => 8, // Récupère les 8 premières images
+                    );
 
-                     foreach ($images as $image) {
-                        $image_url = wp_get_attachment_image_src($image->ID, 'large')[0];
-                        echo '<img src="' . $image_url . '" alt="' . $image->post_title . '">';
-                     }
-                     
-                     
+                    $photo_query = new WP_Query($args);
+
+                    if ($photo_query->have_posts()) :
+                        while ($photo_query->have_posts()) : $photo_query->the_post();
+                            $image_id = get_post_thumbnail_id();
+                            $reference = get_field('reference', $image_id);
+                            $categories = get_the_terms(get_the_ID(), 'categorie');
+                            ?>
+
+                            <div class="container-img">
+                                <?php the_post_thumbnail('large'); ?>
+                                <div class="overlay">
+                                    <a href="lien_vers_votre_page_de_redirection">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="#" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>">
+                                        <i class="fas fa-square"></i>
+                                    </a>
+                                    <div class="infos">
+                                        <div class="left-ref"><?php echo $reference; ?></div>
+                                        <div class="right-cat">
+                                            <?php
+                                           
+                                            if ($categories) {
+                                                foreach ($categories as $category) {
+                                                    echo '<a href="' . get_term_link($category) . '">' . $category->name . '</a>';
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 
+                            </div>
+
+                            <!-- Structure de la lightbox -->
+                            <div id="lightbox" class="lightbox">
+                                <span class="close-button" id="close-button">&times;</span>
+                                <div class="element-lightbox">
+                                    <button class="lightbox__prev" id="prev-button">Précédent</button>
+                                    <div class="lightbox-content">
+                                        <img id="lightbox-image" class="lightbox-image" src="" alt="Image">
+                                        <div class="info-ref-cat">
+                                            <div class="ref" id="lightbox-reference"></div>
+                                            <div class="cat" id="lightbox-categories"></div>
+                                        </div>
+                                    </div>
+                                    <button class="lightbox__next" id="next-button">Suivant</button>
+                                    
+                                </div>
+                                
+                            </div>
+
+                        <?php
+                        endwhile;
+                        wp_reset_postdata();
+                    endif;
+
+                    
+                    
                 ?>
+
+
             </div>
-            <button id="charger-plus">Charger plus</button>
+            <div class="images-plus photos"></div>
+            
+            <button class="btn-plus" id="charger">Charger plus</button>
+
+            <!-- Structure de la lightbox
+            <div id="lightbox" class="lightbox">
+                <span class="close-button" id="close-button">&times;</span>
+                <div class="element-lightbox">
+                    <button class="lightbox__prev" id="prev-button">Précédent</button>
+                    <div class="lightbox-content">
+                        <img id="lightbox-image" class="lightbox-image" src="" alt="Image">
+                    </div>
+                    <button class="lightbox__next" id="next-button">Suivant</button>
+                </div>
+
+
+            </div> -->
         </section>
 
     </main>
