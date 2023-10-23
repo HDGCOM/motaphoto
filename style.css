@@ -309,3 +309,23 @@ a{
    justify-content: space-between;
    align-items: baseline;
 }
+
+/*Filtres*/
+.filtres{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+.catfor{
+    width: 50%;
+    display: flex;
+    justify-content:space-around;
+    gap: 30px;
+}
+.selection{
+    width: 260px;
+    height: 42px;
+    border-radius: 8px;
+    padding: 0 20px;
+}

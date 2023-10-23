@@ -265,14 +265,14 @@ initializeLightbox(initialOpenLightboxLinks);
 jQuery(document).ready(function($) {
     // Utilisez AJAX pour récupérer les données ACF.
     $.ajax({
-        url: 'templates_part/get_images_filter.php', // Remplacez par le chemin réel vers votre fichier PHP.
+        url: '/wp-content/themes/motaphoto/get_images_filter.php', // le chemin vers fichier PHP.
         type: 'GET',
         dataType: 'json',
         success: function(data) {
             // Remplissez les listes déroulantes avec les données récupérées.
             var categoriesSelect = $('#categories-select');
             var formatsSelect = $('#formats-select');
-            var anneeSelect = $('#annees-select');
+            var anneeSelect = $('#annee-select');
 
             categoriesSelect.append($('<option>').text('Catégories').attr('value', ''));
             formatsSelect.append($('<option>').text('Formats').attr('value', ''));

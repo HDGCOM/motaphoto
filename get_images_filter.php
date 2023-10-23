@@ -3,8 +3,8 @@
 //require_once("wp-load.php");
 
 // Récupérez les attributs ACF pour les images.
-//$categories = get_field('categories', $image_id);
-//$formats = get_field('formats', $image_id);
+//$categories = get_field('categorie', $image_id);
+//$formats = get_field('format', $image_id);
 $annee = get_field('annee', $image_id);
 
 // Retournez les attributs sous forme de tableau JSON.
@@ -16,13 +16,13 @@ $response = array(
 
 // Pour récupérer les termes de catégories CPT UI.
 $categories = get_terms(array(
-    'taxonomy' => 'categorie',
+    'taxonomy' => 'categories',
     'hide_empty' => false // Affiche les termes même s'ils sont vides.
 ));
 
 // Pour récupérer les termes de formats CPT UI.
 $formats = get_terms(array(
-    'taxonomy' => 'format',
+    'taxonomy' => 'formats',
     'hide_empty' => false // Affiche les termes même s'ils sont vides.
 ));
 

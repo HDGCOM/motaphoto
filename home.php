@@ -16,18 +16,24 @@ get_header()
         </section>
         <section class="galerie">
         <div class="filtres">
-            <div class="catégories">
-                <select id="categories-select">
-                    <!-- Options de catégories seront ajoutées ici. -->
-                </select>
+            <div class="catfor">
+                <div class="catégories">
+                    <select class="selection" id="categories-select">
+                    <option value="">CATÉGORIES</option>
+                        <!-- Options de catégories seront ajoutées ici. -->
+                    </select>
+                </div>
+                <div class="formats">
+                    <select class="selection" id="formats-select">
+                    <option value="">FORMATS</option>
+                        <!-- Options de formats seront ajoutées ici. -->
+                    </select>
+                </div> 
             </div>
-            <div class="formats">
-                <select id="formats-select">
-                    <!-- Options de formats seront ajoutées ici. -->
-                </select>
-            </div> 
+
             <div class="trier">
-                <select id="annees-select">
+                <select class="selection" id="annee-select">
+                <option value="">TRIER PAR</option>
                     <!-- Options d'années seront ajoutées ici. -->
                 </select>
             </div>        
