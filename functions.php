@@ -62,7 +62,7 @@
                       <a href="lien_vers_votre_page_de_redirection">
                           <i class="fas fa-eye"></i>
                       </a>
-                      <a href="#" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>">
+                      <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>">
                           <i class="fas fa-square"></i>
                       </a>
                       <div class="infos">
@@ -71,7 +71,7 @@
                               <?php
                               if ($categories) {
                                   foreach ($categories as $category) {
-                                      echo '<a href="' . get_term_link($category) . '">' . $category->name . '</a>';
+                                    echo '<span>' . $category->name . '</span>';
                                   }
                               }
                               ?>
@@ -79,14 +79,12 @@
                       </div>
                   </div>
               </div>
-
-              
+            </div>
 
               <?php
 
               endwhile;
         endif; 
-        
 
         wp_reset_postdata();
         die();

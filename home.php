@@ -15,17 +15,23 @@ get_header()
             </div>
         </section>
         <section class="galerie">
-            <div class="filtres">
-                <div class="catégories">
-
-                </div>
-                <div class="formats">
-                    
-                </div> 
-                <div class="trier">
-                    
-                </div>        
+        <div class="filtres">
+            <div class="catégories">
+                <select id="categories-select">
+                    <!-- Options de catégories seront ajoutées ici. -->
+                </select>
             </div>
+            <div class="formats">
+                <select id="formats-select">
+                    <!-- Options de formats seront ajoutées ici. -->
+                </select>
+            </div> 
+            <div class="trier">
+                <select id="annees-select">
+                    <!-- Options d'années seront ajoutées ici. -->
+                </select>
+            </div>        
+        </div>
             <div class="photos">
                 <?php
                     $args = array(
@@ -48,7 +54,7 @@ get_header()
                                     <a href="lien_vers_votre_page_de_redirection">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="#" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>">
+                                    <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>">
                                         <i class="fas fa-square"></i>
                                     </a>
                                     <div class="infos">
@@ -58,7 +64,7 @@ get_header()
                                            
                                             if ($categories) {
                                                 foreach ($categories as $category) {
-                                                    echo '<a href="' . get_term_link($category) . '">' . $category->name . '</a>';
+                                                    echo '<span>' . $category->name . '</span>';
                                                 }
                                             }
                                             ?>
@@ -68,25 +74,6 @@ get_header()
 
                                  
                             </div>
-
-                            <!-- Structure de la lightbox -->
-                            <div id="lightbox" class="lightbox">
-                                <span class="close-button" id="close-button">&times;</span>
-                                <div class="element-lightbox">
-                                    <button class="lightbox__prev" id="prev-button">Précédent</button>
-                                    <div class="lightbox-content">
-                                        <img id="lightbox-image" class="lightbox-image" src="" alt="Image">
-                                        <div class="info-ref-cat">
-                                            <div class="ref" id="lightbox-reference"></div>
-                                            <div class="cat" id="lightbox-categories"></div>
-                                        </div>
-                                    </div>
-                                    <button class="lightbox__next" id="next-button">Suivant</button>
-                                    
-                                </div>
-                                
-                            </div>
-
                         <?php
                         endwhile;
                         wp_reset_postdata();
@@ -102,19 +89,23 @@ get_header()
             
             <button class="btn-plus" id="charger">Charger plus</button>
 
-            <!-- Structure de la lightbox
+             <!-- Structure de la lightbox -->
             <div id="lightbox" class="lightbox">
                 <span class="close-button" id="close-button">&times;</span>
                 <div class="element-lightbox">
                     <button class="lightbox__prev" id="prev-button">Précédent</button>
                     <div class="lightbox-content">
                         <img id="lightbox-image" class="lightbox-image" src="" alt="Image">
+                        <div class="info-ref-cat">
+                            <div class="ref" id="lightbox-reference"></div>
+                            <div class="cat" id="lightbox-categories"></div>
+                        </div>
                     </div>
                     <button class="lightbox__next" id="next-button">Suivant</button>
+                    
                 </div>
-
-
-            </div> -->
+                
+            </div>
         </section>
 
     </main>
