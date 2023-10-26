@@ -15,30 +15,43 @@ get_header()
             </div>
         </section>
         <section class="galerie">
-        <div class="filtres">
-            <div class="catfor">
-                <div class="catégories">
-                    <select class="selection" id="categories-select">
-                    <option value="">CATÉGORIES</option>
-                        <!-- Options de catégories seront ajoutées ici. -->
-                    </select>
-                </div>
-                <div class="formats">
-                    <select class="selection" id="formats-select">
-                    <option value="">FORMATS</option>
-                        <!-- Options de formats seront ajoutées ici. -->
-                    </select>
-                </div> 
-            </div>
+        <?php
+            // Récupération des catégories personnalisées à partir de CPT UI
+            $categories = get_terms('categorie');
 
-            <div class="trier">
-                <select class="selection" id="annee-select">
-                <option value="">TRIER PAR</option>
-                    <!-- Options d'années seront ajoutées ici. -->
-                </select>
-            </div>        
-        </div>
-            <div class="photos">
+            // Récupération des formats personnalisés à partir de CPT UI
+            $formats = get_terms('format');
+            
+        ?>
+
+            <!-- Affichez les filtres sur la page -->
+            
+            <div class="filtres">
+                <div class="catfor">
+                    <div class="catégories">
+                        <select class="selection" id="categories-select">
+                            <option value="">CATÉGORIES</option>
+                            <?php foreach ($categories as $category) : ?>
+                                <option value="<?php echo esc_attr($category->slug); ?>"><?php echo esc_html($category->name); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="formats">
+                        <select class="selection" id="formats-select">
+                            <option value="">FORMATS</option>
+                            <?php foreach ($formats as $format) : ?>
+                                <option value="<?php echo esc_attr($format->slug); ?>"><?php echo esc_html($format->name); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div> 
+                </div>
+                <div class="trier">
+                   <select class="selection" id="annee-select">
+                        <option value="">TRIER PAR</option>
+                    </select>
+                </div>        
+            </div>
+            <div class="photos filter-photos">
                 <?php
                     $args = array(
                         'post_type' => 'photo', // Remplacez 'photo' par le slug de votre type de publication personnalisé
@@ -52,10 +65,13 @@ get_header()
                             $image_id = get_post_thumbnail_id();
                             $reference = get_field('reference', $image_id);
                             $categories = get_the_terms(get_the_ID(), 'categorie');
+                            $image_url = get_the_post_thumbnail_url(); // URL de l'image
+                            $image_annee = get_field('annee', $image_id); // Récupérer l'année personnalisée ACF de l'image
                             ?>
 
                             <div class="container-img">
-                                <?php the_post_thumbnail('large'); ?>
+                                <img class="featured-image" src="<?php echo $image_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>">
+                                <?php //the_post_thumbnail('large'); ?>
                                 <div class="overlay">
                                     <a href="lien_vers_votre_page_de_redirection">
                                         <i class="fas fa-eye"></i>
