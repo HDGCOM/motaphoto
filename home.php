@@ -110,7 +110,7 @@ get_header()
             
             <button class="btn-plus" id="charger">Charger plus</button>
 
-             <!-- Structure de la lightbox -->
+             <!-- Structure de la lightbox 
             <div id="lightbox" class="lightbox">
                 <span class="close-button" id="close-button">&times;</span>
                 <div class="element-lightbox">
@@ -126,7 +126,7 @@ get_header()
                     
                 </div>
                 
-            </div>
+            </div>-->
         </section>
 
     </main>

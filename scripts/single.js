@@ -76,6 +76,8 @@ jQuery(document).ready(function($) {
 
     // Liste des miniatures des photos
     var thumbnailPreview = $('.thumbnail-preview');
+    var prevThumbnail = $('.prev-thumbnail');
+    var nextThumbnail = $('.next-thumbnail');
 
     // Liste des URL des photos
     var currentPhotoURL = '<?php echo get_the_post_thumbnail_url(); ?>';
@@ -85,16 +87,21 @@ jQuery(document).ready(function($) {
     // Afficher la miniature de l'article actuel
     thumbnailPreview.css('background-image', 'url(' + currentPhotoURL + ')');
 
-    // Afficher la miniature au survol d'un lien de navigation
+    // Afficher les miniatures des articles précédents et suivants au survol des liens
     prevLink.hover(function() {
         thumbnailPreview.css('background-image', 'url(' + prevPhotoURL + ')');
+        prevThumbnail.css('display', 'none'); // Masquer la miniature
     }, function() {
         thumbnailPreview.css('background-image', 'url(' + currentPhotoURL + ')');
+        prevThumbnail.css('display', 'block'); // Afficher la miniature
     });
 
     nextLink.hover(function() {
         thumbnailPreview.css('background-image', 'url(' + nextPhotoURL + ')');
+        nextThumbnail.css('display', 'none'); // Masquer la miniature
     }, function() {
         thumbnailPreview.css('background-image', 'url(' + currentPhotoURL + ')');
+        nextThumbnail.css('display', 'block'); // Afficher la miniature
     });
 });
+

@@ -1,6 +1,7 @@
 
 <footer>
     <?php get_template_part('templates_part/modale', 'template'); ?>
+    <?php get_template_part('templates_part/lightbox')?>
     <div class="container footer">
         <div class="footer-content">
             <nav class="footer-menu">

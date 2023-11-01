@@ -62,6 +62,7 @@ if (have_posts()) :
             <div class="thumbnail-preview"></div>
             <a class="nav-link prev" href="#">Précédent</a>
             <a class="nav-link next" href="#">Suivant</a>
+            
         </div>
     </div>
     <div class="more-single">
