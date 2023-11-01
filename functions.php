@@ -12,6 +12,7 @@
     function theme_enqueue_styles() {
       wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
       wp_enqueue_script('custom-script', get_template_directory_uri() . '/scripts/script.js', array('jquery'), '1.0', true);
+      wp_enqueue_script('single-script', get_template_directory_uri() . '/scripts/single.js', array('jquery'), '1.0', true);
 
       // Localiser les variables AJAX pour le script
       wp_localize_script('custom-script', 'custom_script_params', array(
@@ -60,9 +61,8 @@
 
               <div class="container-img">
                   <img class="featured-image" src="<?php echo $image_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>">
-                  <?php //the_post_thumbnail('large'); ?>
                   <div class="overlay">
-                      <a href="lien_vers_votre_page_de_redirection">
+                      <a href="<?php echo esc_url(get_permalink()); ?>">
                           <i class="fas fa-eye"></i>
                       </a>
                       <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>">

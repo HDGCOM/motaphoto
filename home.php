@@ -71,9 +71,8 @@ get_header()
 
                             <div class="container-img">
                                 <img class="featured-image" src="<?php echo $image_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>">
-                                <?php //the_post_thumbnail('large'); ?>
                                 <div class="overlay">
-                                    <a href="lien_vers_votre_page_de_redirection">
+                                    <a href="<?php echo esc_url(get_permalink()); ?>">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>">
