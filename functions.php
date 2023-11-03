@@ -19,6 +19,19 @@
         'ajaxurl' => admin_url('admin-ajax.php'), // L'URL de l'endpoint AJAX
         'nonce' => wp_create_nonce('custom_script_nonce')
       ));
+      
+      //Single.js function
+      // Récupérez l'ID de l'article
+        $article_id = get_the_ID();
+
+        // Obtenez le lien de l'article
+        $article_link = get_permalink($article_id);
+
+        // Enregistrez ces données pour JavaScript avec votre handle 'single-script'
+        wp_localize_script('single-script', 'articleData', array(
+            'articleId' => $article_id,
+            'articleLink' => $article_link,
+        ));
 
     }
 
@@ -246,6 +259,162 @@ function filter_photos() {
 add_action('wp_ajax_filter_photos', 'filter_photos');
 add_action('wp_ajax_nopriv_filter_photos', 'filter_photos');
 
+// Fonction pour charger les photos de la même catégorie en utilisant Ajax
+function load_more_posts() {
+    $offset = sanitize_text_field($_POST['offset']);
+    $posts_per_page = sanitize_text_field($_POST['posts_per_page']);
+    $postsPerPage = -1;
+    $total_posts = wp_count_posts('photo')->publish;
+   
+
+    // Vérifiez si nous avons déjà chargé tous les articles
+    if ($offset >= $total_posts) {
+        echo 'No more posts to load';
+        wp_die();
+    }
+
+    // Ajustez l'offset pour exclure les deux premières photos
+    $adjusted_offset = $offset + 2;
+
+    $related_args = array(
+        'post_type' => 'photo',
+        'posts_per_page' => $postsPerPage,
+        'offset' => $adjusted_offset,
+       
+    );
+
+    $related_query = new WP_Query($related_args);
+
+    if ($related_query->have_posts()) {
+        while ($related_query->have_posts()) {
+            $related_query->the_post();
+            $related_image_url = get_the_post_thumbnail_url();
+            $image_id = get_post_thumbnail_id();
+            $reference = get_field('reference', $image_id);
+            $categories = get_the_terms(get_the_ID(), 'categorie');
+            $image_annee = get_field('annee', $image_id);
+    
+            $thumbnail_data = wp_get_attachment_image_src($image_id, 'thumbnail');
+            $thumbnail_url = $thumbnail_data[0];
+    ?>
+            <div class="container-img">
+                <img src="<?php echo esc_url($related_image_url); ?>" data-thumbnail-src="<?php echo $thumbnail_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>" data-article-id="<?php echo get_the_ID(); ?>">
+    
+                <div class="overlay">
+                    <a href="<?php echo esc_url(get_permalink()); ?>">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>" data-article-id="<?php echo get_the_ID(); ?>">
+                        <i class="fas fa-square"></i>
+                    </a>
+                    <div class="infos">
+                        <div class="left-ref"><?php echo $reference; ?></div>
+                        <div class="right-cat">
+                            <?php
+                            if ($categories) {
+                                foreach ($categories as $category) {
+                                    echo '<span>' . $category->name . '</span>';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <?php
+        }
+    }
+    
+    wp_die();
+}
+
+add_action('wp_ajax_load_more_posts', 'load_more_posts');
+add_action('wp_ajax_nopriv_load_more_posts', 'load_more_posts');
+
+
+/*function load_more_posts() {
+    $offset = sanitize_text_field($_POST['offset']);
+    $posts_per_page = sanitize_text_field($_POST['posts_per_page']);
+    $total_posts = wp_count_posts('photo')->publish;
+    $postsPerPage = 16;
+    $post = get_post();
+
+    // Récupérer le nombre total d'images de la même catégorie
+    $args_total = array(
+        'post_type' => 'photo',
+        'posts_per_page' => -1, // Récupérer toutes les images
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'categorie',
+                'field' => 'id',
+                'terms' => wp_get_post_terms($post->ID, 'categorie', array("fields" => "ids")),
+            ),
+        ),
+    );
+    $total_images_query = new WP_Query($args_total);
+    $totalImages = $total_images_query->post_count;
+
+    // Vérifiez si nous avons déjà chargé toutes les images
+    if ($offset >= $totalImages) {
+        echo 'No more posts to load';
+        wp_die();
+    }
+
+    // Ajustez l'offset pour exclure les deux premières photos
+    $adjusted_offset = $offset + 2;
+
+    $related_args = array(
+        'post_type' => 'photo',
+        'posts_per_page' => $postsPerPage,
+        'offset' => $adjusted_offset,
+    );
+
+    $related_query = new WP_Query($related_args);
+
+    if ($related_query->have_posts()) {
+        while ($related_query->have_posts()) {
+            $related_query->the_post();
+            $related_image_url = get_the_post_thumbnail_url();
+            $image_id = get_post_thumbnail_id();
+            $reference = get_field('reference', $image_id);
+            $categories = get_the_terms(get_the_ID(), 'categorie');
+            $image_annee = get_field('annee', $image_id);
+
+            $thumbnail_data = wp_get_attachment_image_src($image_id, 'thumbnail');
+            $thumbnail_url = $thumbnail_data[0];
+            ?>
+            <div class="container-img">
+                <img src="<?php echo esc_url($related_image_url); ?>" data-thumbnail-src="<?php echo $thumbnail_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>" data-article-id="<?php echo get_the_ID(); ?>">
+
+                <div class="overlay">
+                    <a href="<?php echo esc_url(get_permalink()); ?>">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>" data-article-id="<?php echo get_the_ID(); ?>">
+                        <i class="fas fa-square"></i>
+                    </a>
+                    <div class="infos">
+                        <div class="left-ref"><?php echo $reference; ?></div>
+                        <div class="right-cat">
+                            <?php
+                            if ($categories) {
+                                foreach ($categories as $category) {
+                                    echo '<span>' . $category->name . '</span>';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+    wp_die();
+}
+
+add_action('wp_ajax_load_more_posts', 'load_more_posts');
+add_action('wp_ajax_nopriv_load_more_posts', 'load_more_posts');*/
+
 ?>
-
-

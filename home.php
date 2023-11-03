@@ -67,10 +67,14 @@ get_header()
                             $categories = get_the_terms(get_the_ID(), 'categorie');
                             $image_url = get_the_post_thumbnail_url(); // URL de l'image
                             $image_annee = get_field('annee', $image_id); // Récupérer l'année personnalisée ACF de l'image
+                            
+                            // Obtenez l'URL de la miniature
+                            $thumbnail_data = wp_get_attachment_image_src($image_id, 'thumbnail'); // Remplacez 'thumbnail' par la taille de miniature que vous souhaitez
+                            $thumbnail_url = $thumbnail_data[0];
                             ?>
 
                             <div class="container-img">
-                                <img class="featured-image" src="<?php echo $image_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>">
+                                <img class="featured-image" src="<?php echo $image_url; ?>" data-thumbnail-src="<?php echo $thumbnail_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>">
                                 <div class="overlay">
                                     <a href="<?php echo esc_url(get_permalink()); ?>">
                                         <i class="fas fa-eye"></i>

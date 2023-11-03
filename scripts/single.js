@@ -1,107 +1,196 @@
 /*jQuery(document).ready(function($) {
-    // Liste des liens de navigation
-    var prevLink = document.querySelector('.nav-link.prev');
-    var nextLink = document.querySelector('.nav-link.next');
 
-    // Liste des miniatures des photos
-    var thumbnailPreview = document.querySelector('.thumbnail-preview');
+    // Sélectionnez le conteneur des miniatures
+    var thumbnailsContainer = $('.thumbnails-container');
 
-    // Liste des URL des photos
-    var photoURLs = [
-        '<?php echo get_the_post_thumbnail_url(get_previous_post()->ID); ?>',
-        '<?php echo get_the_post_thumbnail_url(get_next_post()->ID); ?>',
-    ];
+    // Récupérez les images 
+    var originalImages = document.querySelectorAll(".container-img img");
 
-    // Index de la photo actuelle
-    var currentPhotoIndex = 0;
+    // Index de l'image actuellement affichée
+    var currentIndex = 0;
 
-    // Afficher la miniature au survol d'un lien de navigation
-    prevLink.addEventListener('mouseover', function () {
-        showThumbnail(currentPhotoIndex - 1);
-    });
-
-    nextLink.addEventListener('mouseover', function () {
-        showThumbnail(currentPhotoIndex + 1);
-    });
-
-    // Cacher la miniature lorsque le curseur quitte le lien de navigation
-    prevLink.addEventListener('mouseout', hideThumbnail);
-    nextLink.addEventListener('mouseout', hideThumbnail);
-
-    // Fonction pour afficher la miniature de la photo à l'index spécifié
-    function showThumbnail(index) {
-        if (index >= 0 && index < photoURLs.length) {
-            var thumbnailURL = photoURLs[index];
-            thumbnailPreview.style.backgroundImage = 'url(' + thumbnailURL + ')';
-        }
-    }
-
-    // Fonction pour cacher la miniature
-    function hideThumbnail() {
-        thumbnailPreview.style.backgroundImage = 'none';
-    }
-
-    // Gérer la navigation lorsque les liens sont cliqués
-    prevLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        navigate(-1);
-    });
-
-    nextLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        navigate(1);
-    });
-
-    // Fonction pour naviguer vers la photo suivante ou précédente
-    function navigate(direction) {
-        currentPhotoIndex += direction;
-        
-        // Assurez-vous que l'index reste dans les limites
-        if (currentPhotoIndex < 0) {
-            currentPhotoIndex = 0;
-        } else if (currentPhotoIndex >= photoURLs.length) {
-            currentPhotoIndex = photoURLs.length - 1;
-        }
-        
-        // Affichez la photo correspondante
-        showThumbnail(currentPhotoIndex);
-    }
-});
-*/
-
-jQuery(document).ready(function($) {
-    // Liste des liens de navigation
+    // Sélectionnez les liens "Précédent" et "Suivant"
     var prevLink = $('.nav-link.prev');
     var nextLink = $('.nav-link.next');
 
-    // Liste des miniatures des photos
-    var thumbnailPreview = $('.thumbnail-preview');
-    var prevThumbnail = $('.prev-thumbnail');
-    var nextThumbnail = $('.next-thumbnail');
+    // Fonction pour afficher l'image au survol du lien
+    function showImageOnHover(index) {
+        thumbnailsContainer.html(""); // Effacez les miniatures actuelles
+        thumbnailsContainer.append(originalImages[index].cloneNode(true));
+    }
 
-    // Liste des URL des photos
-    var currentPhotoURL = '<?php echo get_the_post_thumbnail_url(); ?>';
-    var prevPhotoURL = '<?php echo get_the_post_thumbnail_url(get_previous_post()->ID); ?>';
-    var nextPhotoURL = '<?php echo get_the_post_thumbnail_url(get_next_post()->ID); ?>';
-
-    // Afficher la miniature de l'article actuel
-    thumbnailPreview.css('background-image', 'url(' + currentPhotoURL + ')');
-
-    // Afficher les miniatures des articles précédents et suivants au survol des liens
-    prevLink.hover(function() {
-        thumbnailPreview.css('background-image', 'url(' + prevPhotoURL + ')');
-        prevThumbnail.css('display', 'none'); // Masquer la miniature
-    }, function() {
-        thumbnailPreview.css('background-image', 'url(' + currentPhotoURL + ')');
-        prevThumbnail.css('display', 'block'); // Afficher la miniature
+    // Réinitialiser l'affichage lorsque la souris quitte le lien "Précédent"
+    prevLink.mouseenter(function() {
+        showImageOnHover(currentIndex);
     });
 
-    nextLink.hover(function() {
-        thumbnailPreview.css('background-image', 'url(' + nextPhotoURL + ')');
-        nextThumbnail.css('display', 'none'); // Masquer la miniature
-    }, function() {
-        thumbnailPreview.css('background-image', 'url(' + currentPhotoURL + ')');
-        nextThumbnail.css('display', 'block'); // Afficher la miniature
+    // Associez la fonction d'affichage au survol des liens "Précédent" et "Suivant"
+    prevLink.mouseenter(function() {
+        if (currentIndex > 0) {
+            showImageOnHover(currentIndex - 1);
+        }
     });
+
+    nextLink.mouseenter(function() {
+        if (currentIndex < originalImages.length - 1) {
+            showImageOnHover(currentIndex + 1);
+        }
+    });
+
+    // Ajoutez des liens autour des images originales pour les rendre cliquables
+    // Redirigez vers l'article correspondant en cliquant sur le lien "Suivant"
+nextLink.click(function(e) {
+    e.preventDefault();
+    if (currentIndex < originalImages.length - 1) {
+        currentIndex++;
+        var articleId = originalImages[currentIndex].getAttribute("data-article-id");
+        if (articleId) {
+            var articleLink = articleData.articleLink; // Utilisez la variable articleLink passée depuis PHP
+            if (articleLink) {
+                // Redirigez vers l'article de l'image suivante
+                window.location.href = articleLink;
+            }
+        }
+    }
+});
+
+// Redirigez vers l'article correspondant en cliquant sur le lien "Précédent"
+prevLink.click(function(e) {
+    e.preventDefault();
+    if (currentIndex > 0) {
+        currentIndex--;
+        var articleId = originalImages[currentIndex].getAttribute("data-article-id");
+        if (articleId) {
+            var articleLink = articleData.articleLink; // Utilisez la variable articleLink passée depuis PHP
+            if (articleLink) {
+                // Redirigez vers l'article de l'image précédente
+                window.location.href = articleLink;
+            }
+        }
+    }
+});
+
+});*/
+
+jQuery(document).ready(function($) {
+
+    // Sélectionnez le conteneur des miniatures
+    var thumbnailsContainer = $('.thumbnails-container');
+
+    // Récupérez les images 
+    var originalImages = document.querySelectorAll(".container-img img");
+
+    // Index de l'image actuellement affichée
+    var currentIndex = 0;
+
+    // Sélectionnez les liens "Précédent" et "Suivant"
+    var prevLink = $('.nav-link.prev');
+    var nextLink = $('.nav-link.next');
+
+    // Fonction pour afficher l'image au survol du lien
+    function showImageOnHover(index) {
+        thumbnailsContainer.html(""); // Effacez les miniatures actuelles
+        thumbnailsContainer.append(originalImages[index].cloneNode(true));
+    }
+
+    // Réinitialiser l'affichage lorsque la souris quitte le lien "Précédent"
+    prevLink.mouseenter(function() {
+        showImageOnHover(currentIndex);
+    });
+
+    // Associez la fonction d'affichage au survol des liens "Précédent" et "Suivant"
+    prevLink.mouseleave(function() {
+        if (currentIndex > 0) {
+            showImageOnHover(currentIndex - 1);
+        }
+    });
+
+    nextLink.mouseenter(function() {
+        if (currentIndex < originalImages.length - 1) {
+            showImageOnHover(currentIndex + 1);
+        }
+    });
+
+    // Récupérez l'ID de l'article à partir de l'image actuellement affichée
+    function getCurrentArticleId() {
+        return originalImages[currentIndex].getAttribute("data-article-id");
+    }
+
+    // Ajoutez un événement de clic aux liens "Suivant" et "Précédent" pour rediriger
+    nextLink.click(function(e) {
+        e.preventDefault();
+        if (currentIndex < originalImages.length - 1) {
+            currentIndex++;
+            var articleId = getCurrentArticleId();
+            if (articleId) {
+                var articleUrl = articleData.articleLink + '?p=' + articleId; // Construisez l'URL de l'article
+                window.location.href = articleUrl; // Redirigez vers l'article
+            }
+        }
+    });
+    
+    prevLink.click(function(e) {
+        e.preventDefault();
+        if (currentIndex > 0) {
+            currentIndex--;
+            var articleId = getCurrentArticleId();
+            if (articleId) {
+                var articleUrl = articleData.articleLink + '?p=' + articleId; // Construisez l'URL de l'article
+                window.location.href = articleUrl; // Redirigez vers l'article
+            }
+        }
+    });
+
+    //Toutes les photos single
+    jQuery(document).ready(function ($) {
+        var $button = $('#load-same-category-photos');
+        var $imagesContainer = $('.more-images-single');
+        
+        // Nombre d'articles à charger à chaque clic sur le bouton
+        var postsPerPage = -1;
+
+        // Compteur pour suivre le nombre d'articles chargés
+        var postCounter = postsPerPage;
+
+        $button.on('click', function () {
+            // Effectuez une requête AJAX pour charger les articles supplémentaires
+            $.ajax({
+                url: custom_script_params.ajaxurl, // Assurez-vous que cette URL est correcte
+                type: 'POST',
+                data: {
+                    action: 'load_more_posts',
+                    offset: postCounter,
+                    posts_per_page: postsPerPage,
+                },
+                success: function (response) {
+                    $imagesContainer.append(response);
+                    postCounter += postsPerPage;
+                },
+            });
+        });
+    });
+
+    //Modale single
+    // Ouvrir la modal lorsque le lien est cliqué
+    jQuery(document).ready(function ($) {
+        // Ouvrir la modal lorsque le bouton "Contact" est cliqué
+        $('#open-modal-link-article').click(function(e) {
+            e.preventDefault();
+            var reference = $(this).data('reference'); // Récupérer la référence depuis l'attribut data-reference
+
+            // Remplir le champ "RÉF. PHOTO" avec la référence
+            $('input[name="your-subject"]').val(reference);
+
+            // Afficher le modal
+            $('#open-modal').fadeIn();
+        });
+
+
+        // Fermer la modal lorsque le bouton de fermeture est cliqué
+        $('.close').click(function() {
+            $(this).closest('.modal').hide();
+        });
+    });
+    
 });
 
