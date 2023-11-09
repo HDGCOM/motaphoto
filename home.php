@@ -21,35 +21,87 @@ get_header()
 
             // Récupération des formats personnalisés à partir de CPT UI
             $formats = get_terms('format');
+            $annees = get_field('annee');
             
         ?>
-
-            <!-- Affichez les filtres sur la page -->
-            
-            <div class="filtres">
+           <!--div class="filtres">
                 <div class="catfor">
                     <div class="catégories">
-                        <select class="selection" id="categories-select">
-                            <option value="">CATÉGORIES</option>
-                            <?php foreach ($categories as $category) : ?>
-                                <option value="<?php echo esc_attr($category->slug); ?>"><?php echo esc_html($category->name); ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <div class="custom-select">
+                            <span class="select-icon"><i class="fas fa-chevron-down"></i></span>
+                            <select class="selection" id="categories-select">
+                                <option class="drop" value="" selected>CATÉGORIES</option>
+                                <?php foreach ($categories as $category) : ?>
+                                    <option class="drop" value="<?php echo esc_attr($category->slug); ?>"><?php echo esc_html($category->name); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                     <div class="formats">
-                        <select class="selection" id="formats-select">
-                            <option value="">FORMATS</option>
-                            <?php foreach ($formats as $format) : ?>
-                                <option value="<?php echo esc_attr($format->slug); ?>"><?php echo esc_html($format->name); ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div> 
+                        <div class="custom-select">
+                            <span class="select-icon"><i class="fas fa-chevron-down"></i></span>
+                            <select class="selection" id="formats-select">
+                                <option value="" disabled selected>FORMATS</option>
+                                <?php foreach ($formats as $format) : ?>
+                                    <option value="<?php echo esc_attr($format->slug); ?>"><?php echo esc_html($format->name); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="trier">
-                   <select class="selection" id="annee-select">
-                        <option value="">TRIER PAR</option>
-                    </select>
-                </div>        
+                    <div class="custom-select">
+                        <span class="select-icon"><i class="fas fa-chevron-down"></i></span>
+                        <select class="selection" id="annee-select">
+                            <option value="" disabled selected>TRIER PAR</option>
+                        </select>
+                    </div>
+                </div>
+           </div-->
+
+           <div class="filtres">
+                <div class="categories-dropdown">
+
+                    <div class="selected-category selection" id="categories-select">
+                        CATÉGORIES
+                        <div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </div>
+                    <div class="category-options">
+                        <?php foreach ($categories as $category) : ?>
+                            <div class="category-option" data-value="<?php echo esc_attr($category->slug); ?>">
+                                <?php echo esc_html($category->name); ?>
+                            </div>
+                        <?php endforeach;?>
+                    </div>
+                </div>
+
+                <div class="formats-dropdown">
+                    <div class="selected-format selection" id="formats-select">
+                        FORMATS
+                        <div class="chevron-down"><i class="fa-solid fa-chevron-down"></i></div>
+                    </div>
+                    <div class="format-options">
+                        <?php foreach ($formats as $format) : ?>
+                            <div class="format-option" data-value="<?php echo esc_attr($format->slug); ?>">
+                                <?php echo esc_html($format->name); ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+               
+                <div class="annees-dropdown" id="">
+                    
+                    <div class="selected-annee selection" id="">
+                        <span id="selected-annee"></span>
+                        <span class="trier">TRIER PAR</span>
+                        <div class="down-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                    </div>
+                    <div class="annee-options trier" id="annee-options">
+                        <!-- Les années sont ajoutées ici dynamiquement en JavaScript -->
+                    </div>
+                    
+                </div> 
+                     
             </div>
             <div class="photos filter-photos">
                 <?php
@@ -111,26 +163,7 @@ get_header()
 
             </div>
             <div class="images-plus photos"></div>
-            
             <button class="btn-plus" id="charger">Charger plus</button>
-
-             <!-- Structure de la lightbox 
-            <div id="lightbox" class="lightbox">
-                <span class="close-button" id="close-button">&times;</span>
-                <div class="element-lightbox">
-                    <button class="lightbox__prev" id="prev-button">Précédent</button>
-                    <div class="lightbox-content">
-                        <img id="lightbox-image" class="lightbox-image" src="" alt="Image">
-                        <div class="info-ref-cat">
-                            <div class="ref" id="lightbox-reference"></div>
-                            <div class="cat" id="lightbox-categories"></div>
-                        </div>
-                    </div>
-                    <button class="lightbox__next" id="next-button">Suivant</button>
-                    
-                </div>
-                
-            </div>-->
         </section>
 
     </main>

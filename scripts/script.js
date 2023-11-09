@@ -149,9 +149,39 @@
         // Au chargement de la page, initialisez la lightbox pour les liens existants
         const initialOpenLightboxLinks = document.querySelectorAll(".open-lightbox");
         initializeLightbox(initialOpenLightboxLinks);
-
+        
         // Trier par années
-        var yearsSelect = $('#annee-select'); // Sélectionnez votre liste déroulante
+        
+        $('.selected-annee').on('click', function() {
+            $('.annee-options').slideToggle();
+            $('.down-chevron').toggleClass('rotate');
+            $('.selected-annee').toggleClass('onclick');
+           
+        });
+        var yearsOptions = $('#annee-options'); // Sélectionnez le conteneur des options
+
+        // Fonction pour mettre à jour la liste de photos en fonction de l'année sélectionnée
+        function filterByYear(selectedYear) {
+            $.ajax({
+                type: 'POST',
+                url: custom_script_params.ajaxurl, // L'URL AJAX de WordPress
+                data: {
+                    action: 'filter_photos',
+                    security: '<?php echo wp_create_nonce("custom_script_nonce"); ?>',
+                    annee: selectedYear, // Envoyez l'année sélectionnée dans la requête
+                },
+                success: function(response) {
+                    // Mettez à jour la liste de photos avec les résultats de la requête
+                    // Supprimez les anciennes photos et ajoutez les nouvelles photos
+                    var photoContainer = $('.filter-photos'); // Remplacez par le sélecteur de votre conteneur de photos
+                    photoContainer.html(response);
+
+                     // Fermez la liste déroulante après avoir sélectionné une année
+                    yearsOptions.hide();
+
+                }
+            });
+        }
 
         $.ajax({
             type: 'POST',
@@ -163,39 +193,86 @@
             success: function(response) {
                 var years = JSON.parse(response);
 
-                // Remplissez la liste déroulante avec les années uniques
+                // Remplissez la liste déroulante personnalisée avec les années uniques
                 $.each(years, function(index, year) {
-                    yearsSelect.append($('<option>', {
-                        value: year,
-                        text: year
-                    }));
+                    var yearDiv = $('<div>', {
+                        class: 'annee-option',
+                        text: year,
+                        "data-year": year,
+                    });
+
+                    // Ajoutez un gestionnaire d'événement pour la sélection de l'année
+                    yearDiv.click(function() {
+                        // Mettez à jour la valeur sélectionnée
+                        var selectedYear = $(this).data('year');
+                        $('#selected-annee').text(year);
+                        $('.trier').hide();
+                        
+                        // Vous pouvez ajouter d'autres actions ici en fonction de l'année sélectionnée
+                        // Par exemple, déclencher une requête AJAX pour filtrer les photos. 
+                        filterByYear(selectedYear);
+                        
+                    });
+
+                    yearsOptions.append(yearDiv);
                 });
             }
         });
-
-        // Section filtres
-        $('#categories-select, #formats-select, #annee-select').change(function() {
-            var category = $('#categories-select').val();
-            var format = $('#formats-select').val();
-            var annee = $('#annee-select').val();
-
-            // Effectuez la demande AJAX pour mettre à jour les images en fonction des filtres
-            $.ajax({
-                type: 'POST',
-                url: custom_script_params.ajaxurl, // URL AJAX définie par WordPress
-                data: {
-                    action: 'filter_photos',
-                    category: category,
-                    format: format,
-                    annee: annee
-                },
-                success: function(response) {
-                    // Mettez à jour la div ".photos" avec les nouvelles images
-                    $('.filter-photos').html(response);
-                }
-            });
+    });
+    //Pour les catégories
+    $('.selected-category').on('click', function() {
+        $('.category-options').slideToggle();
+        $('.chevron').toggleClass('rotate');
+        $('.selected-category').toggleClass('onclick');
+    });
+    
+    $('.category-option').on('click', function() {
+        var selectedValue = $(this).data('value');
+        var selectedText = $(this).text();
+        $('#categories-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
+        $('.category-options').slideUp();
+    
+        // Effectuez la demande AJAX pour mettre à jour les images en fonction des filtres
+        $.ajax({
+            type: 'POST',
+            url: custom_script_params.ajaxurl, // URL AJAX définie par WordPress
+            data: {
+                action: 'filter_photos',
+                category: selectedValue,
+            },
+            success: function(response) {
+                // Mettez à jour la div ".photos" avec les nouvelles images
+                $('.filter-photos').html(response);
+            }
         });
     });
+    // Pour les formats
+    $('.selected-format').on('click', function() {
+        $('.format-options').slideToggle();
+        $('.chevron-down').toggleClass('rotation');
+        $('.selected-format').toggleClass('onclick');
+    });
 
+    $('.format-option').on('click', function() {
+        var selectedValue = $(this).data('value');
+        var selectedText = $(this).text();
+        $('#formats-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
+        $('.format-options').slideUp();
+
+        // Effectuez la demande AJAX pour mettre à jour les images en fonction des filtres
+        $.ajax({
+            type: 'POST',
+            url: custom_script_params.ajaxurl, // URL AJAX définie par WordPress
+            data: {
+                action: 'filter_photos',
+                format: selectedValue, 
+            },
+            success: function(response) {
+                // Mettez à jour la div ".photos" avec les nouvelles images
+                $('.filter-photos').html(response);
+            }
+        });
+    });
+    
 })(jQuery);
 

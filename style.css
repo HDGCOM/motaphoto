@@ -96,6 +96,8 @@ a{
 .wpcf7-form p{
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 .close{
     display: block !important;
@@ -148,6 +150,7 @@ a{
     margin: 50px auto;
 }
 .photos{
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -223,7 +226,7 @@ a{
     border-radius: 2px;
     background-color: #d8d8d8;
 }
-.btn-plus:hover{
+.btn-plus:hover, .wpcf7-submit:hover{
     background-color: #000 ;
     color: #fff;
     transition: 300ms;
@@ -313,24 +316,121 @@ a{
 }
 
 /*Filtres*/
-.filtres{
-    width: 90%;
+.selection{
+    width: 250px;
     display: flex;
     justify-content: space-between;
-    gap: 30px;
+    padding: 10px 15px;
+    cursor: pointer;
+    position: relative;border: 1px solid #abb8c3;
+    border-radius: 8px;
+}
+.selection.onclick{
+    border: 1px solid #0089fa;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.category-options, .format-options, .annee-options {
+    position: absolute;
+    z-index: 100;
+    background: white;
+    width: 250px;
+    cursor: pointer;
+    padding: 10px 15px;
+    display: none;
+    line-height: 2.5em;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    box-shadow: 0px 1px 2px #020202;
+    
+}
+.chevron i{
+ transition: 0.5s;
+}
+.rotate i, .rotation i{
+    transform: rotate(180deg);
+}
+/*#selected-annee{
+    position: relative;
+}
+.trier{
+    position: absolute;
+}*/
+
+
+
+.filtres{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
 }
 .catfor{
-    width: 50%;
     display: flex;
-    justify-content:space-around;
-    gap: 30px;
+    justify-content: space-between;
+    width: 45%;
 }
-.selection{
-    width: 260px;
-    height: 42px;
+
+/*.custom-select {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 1px solid #B8BBC2; 
     border-radius: 8px;
-    padding: 0 20px;
+    padding: 10px;
+    background-color: #fff;
+    width: 200px;
+    cursor: pointer;
+    
 }
+.custom-select select option {
+    background-color: #fff; /* Couleur de fond */
+   /* color: #333; /* Couleur du texte */
+    /*padding: 10px; /* Espacement interne */
+   /*border: none; /* Retirer la bordure */
+/*}
+
+/* Style des options au survol */
+/*.custom-select select .drop:hover {
+    background-color: #e90a21; /* Couleur de fond au survol */
+   /* color: #fff; /* Couleur du texte au survol */
+/*}
+.selection .drop {
+    line-height: 2em;
+    font-size: 1em;
+
+}
+.custom-select select:focus{
+    outline: #215AFF 1px solid;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.custom-select .select-icon {
+   position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    flex-shrink: 0;
+    padding: 5px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.custom-select.select .select-icon{
+    transform: translateY(-50%) rotate(180deg); /* Rotation de 180 degrés */
+   
+/*}
+
+/* Style Font Awesome icons */
+/*.select-icon i {
+    font-size: 12px;
+}*/
 
 /*Single page*/
 .single{
@@ -369,7 +469,7 @@ a{
 .image-single img{
     width: 100%;
     height: 70vh;
-    object-fit: contain;
+    object-fit: cover;
 }
 .contact-single{
     height: 118px;
