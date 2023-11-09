@@ -172,12 +172,10 @@
                 },
                 success: function(response) {
                     // Mettez à jour la liste de photos avec les résultats de la requête
-                    // Supprimez les anciennes photos et ajoutez les nouvelles photos
                     var photoContainer = $('.filter-photos'); // Remplacez par le sélecteur de votre conteneur de photos
                     photoContainer.html(response);
-
                      // Fermez la liste déroulante après avoir sélectionné une année
-                    yearsOptions.hide();
+                    yearsOptions.slideUp();
 
                 }
             });
@@ -216,8 +214,10 @@
 
                     yearsOptions.append(yearDiv);
                 });
+               
             }
         });
+        
     });
     //Pour les catégories
     $('.selected-category').on('click', function() {
@@ -258,6 +258,7 @@
         var selectedText = $(this).text();
         $('#formats-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
         $('.format-options').slideUp();
+        
 
         // Effectuez la demande AJAX pour mettre à jour les images en fonction des filtres
         $.ajax({
@@ -272,7 +273,25 @@
                 $('.filter-photos').html(response);
             }
         });
+
     });
+    //Visited red
+    $(document).ready(function() {
+        $('.category-option, .format-option').click(function() {
+            // Supprimer la classe 'clicked' de tous les éléments sauf celui sur lequel vous avez cliqué
+            $('.category-option, .format-option').not(this).removeClass('clicked');
+            
+            // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
+            $(this).toggleClass('clicked');
+        });
+    });
+
+    $('#annee-options').on('click', '.annee-option', function() {
+        // Supprimer la classe 'clicked' de tous les éléments sauf celui sur lequel vous avez cliqué
+        $('.annee-option').not(this).removeClass('clicked');
     
-})(jQuery);
+        // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
+        $(this).toggleClass('clicked');});
+    
+   })(jQuery);
 

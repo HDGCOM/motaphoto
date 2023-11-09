@@ -334,9 +334,9 @@ a{
     position: absolute;
     z-index: 100;
     background: white;
-    width: 250px;
+    width: 280px;
     cursor: pointer;
-    padding: 10px 15px;
+    /*padding: 10px 15px;*/
     display: none;
     line-height: 2.5em;
     border-bottom-left-radius: 8px;
@@ -344,18 +344,36 @@ a{
     box-shadow: 0px 1px 2px #020202;
     
 }
+.category-option, .format-option, .annee-option{
+ padding: 10px 15px;
+}
+.category-option:hover, .format-option:hover, .annee-option:hover{
+    background-color: #FFD6D6;
+}
+
+.category-option.clicked,
+.format-option.clicked,
+.annee-option.clicked {
+    background-color: #e00000;
+    color: #fff;
+}
+
 .chevron i{
  transition: 0.5s;
 }
 .rotate i, .rotation i{
     transform: rotate(180deg);
 }
-/*#selected-annee{
+.selected-annee span{
+    display: block;
+    
+}
+#selected-annee{
     position: relative;
 }
 .trier{
     position: absolute;
-}*/
+}
 
 
 
