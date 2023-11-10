@@ -1,7 +1,7 @@
 (function($) {
     jQuery(document).ready(function($) {
         // Ouvrir la modal lorsque le lien est cliqué
-        $('#open-modal-link').click(function(e) {
+        $(/*'#open-modal-link'*/ '.item-open-modal').click(function(e) {
             e.preventDefault();
             $('#open-modal').fadeIn();
         });
@@ -291,16 +291,31 @@
         $('.annee-option').not(this).removeClass('clicked');
     
         // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
-        $(this).toggleClass('clicked');});
+        $(this).toggleClass('clicked');
+    });
 
-        $(document).ready(function () {
-            var mobileMenuButton = $('.mobile-menu-button');
-            var mobileMenu = $('.mobile-menu');
-    
-            mobileMenuButton.click(function () {
-                mobileMenu.toggle();
+    $(document).ready(function () {
+        var mobileMenuButton = $('.mobile-menu-button');
+        var mobileMenu = $('.mobile-menu');
+
+        mobileMenuButton.click(function () {
+            mobileMenu.toggle();
+            mobileMenuButton.toggleClass('open');
+        });
+
+        //  Gérer le clic sur les liens du menu
+        $('.mobile-menu a').click(function (e) {
+            e.preventDefault(); // Empêche le comportement de lien par défaut
+
+            var targetPage = $(this).attr('href');
+
+            // Fermez le menu avec un fondu et redirigez vers la page cible
+            mobileMenu.fadeOut(400, function () {
+                mobileMenuButton.removeClass('open'); 
+                window.location.href = targetPage;
             });
         });
+    });
     
    })(jQuery);
 

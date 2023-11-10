@@ -45,7 +45,7 @@
       // Vérifiez s'il s'agit du menu "primary"
       if ($args->theme_location == 'primary' || $args->theme_location == 'mobile') {
           // Ajoutez un élément "Contact" à la fin du menu avec une classe "open-modal"
-          $items .= '<li id="open-modal-link" ><a  href="#">Contact</a></li>';
+          $items .= '<li id="open-modal-link" class="item-open-modal" ><a  href="#">Contact</a></li>';
       }
       return $items;
   }

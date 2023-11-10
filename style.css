@@ -16,7 +16,6 @@ body{
     font-family: 'Space Mono', sans-serif;
     font-size: 16px;
     color: #000;
-    /*margin: 0 auto;*/
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -289,7 +288,7 @@ a{
 
 }
 .lightbox__prev::before{
-    content: "\2190"; /* Flèche gauche pour "Précédent" et flèche droite pour "Suivant" */
+    content: "\2190";
     display: inline-block;
     margin-right: 5px;
     font-size: 24px;
@@ -298,7 +297,7 @@ a{
 }
 
 .lightbox__next::after {
-    content: "\2192"; /* Flèche gauche pour "Précédent" et flèche droite pour "Suivant" */
+    content: "\2192"; 
     display: inline-block;
     margin-right: 5px;
     font-size: 24px;
@@ -490,9 +489,8 @@ a{
 .mobile-menu{
     display: none;
 }
-/* Styles pour le bouton de menu burger */
 .mobile-menu-button {
-    display: none; /* Cacher le bouton par défaut */
+    display: none; 
     cursor: pointer;
 }
 .bar {
@@ -504,11 +502,24 @@ a{
     transition: 0.4s;
 }
 
-/* Styles pour le menu principal */
-.header-menu {
-    display: block;
+/* Styles pour l'icône X */
+.mobile-menu-button.open .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
 }
 
+.mobile-menu-button.open .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-button.open .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+.header-menu {
+    display: block;
+    position: absolute;
+    right: 20vw;
+}
 
 /* Media query pour les écrans de 360px à 700px */
 @media screen and (max-width: 700px) and (min-width: 360px) {
@@ -518,7 +529,7 @@ a{
         overflow-x: hidden;
     }
     .mobile-menu-button {
-        display: block; /* Afficher le bouton de menu burger */
+        display: block; 
         position: relative;
         text-align: -webkit-right;
         padding-right: 30px;
@@ -545,7 +556,7 @@ a{
     }
  
     .header-menu {
-        display: none; /* Cacher le menu principal */
+        display: none;
     }
     .container{
         justify-content: flex-start;
@@ -558,10 +569,8 @@ a{
     .nav-mobile{
         width: 100%;
         position: absolute;
-        /*right: 30px;*/
     }
     .filtres{
-
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -599,6 +608,34 @@ a{
     }
     .container.footer{
         height: 200px;
+    }
+    .overlay-modal{
+        margin:20px 0;
+        z-index: 100;
+    }
+    .modal{
+        width: 90%;
+        height: 90vh;
+        margin: 30px auto;
+    }
+    .js{
+        margin: 50px auto;
+        position: relative;
+    }
+    .wpcf7-form p{
+        margin: 10px 0;
+    }
+    .close{
+        position: absolute;
+        right: 20px;
+    }
+    .overlay{
+        width: 100%;
+        height: 40vh;
+    }
+    .overlay i{
+        font-size: 1.2em;
+        font-weight: 400;
     }
 }
 
