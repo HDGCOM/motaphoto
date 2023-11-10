@@ -7,6 +7,11 @@
             'footer'  => __('Menu Pied de Page', 'motaphoto'),
         )
     );
+
+    function register_mobile_menu() {
+        register_nav_menu('mobile', __('Mobile Menu'));
+    }
+    add_action('after_setup_theme', 'register_mobile_menu');
    
    add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
     function theme_enqueue_styles() {
@@ -38,7 +43,7 @@
     //Modale
     function ajouter_contact_au_menu($items, $args) {
       // Vérifiez s'il s'agit du menu "primary"
-      if ($args->theme_location == 'primary') {
+      if ($args->theme_location == 'primary' || $args->theme_location == 'mobile') {
           // Ajoutez un élément "Contact" à la fin du menu avec une classe "open-modal"
           $items .= '<li id="open-modal-link" ><a  href="#">Contact</a></li>';
       }

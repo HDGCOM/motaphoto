@@ -16,8 +16,13 @@ body{
     font-family: 'Space Mono', sans-serif;
     font-size: 16px;
     color: #000;
-    margin: 0 auto;
+    /*margin: 0 auto;*/
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
+
+
 ul{
     list-style-type: none;
     margin: 0;
@@ -388,68 +393,6 @@ a{
     width: 45%;
 }
 
-/*.custom-select {
-    position: relative;
-    display: inline-block;
-}
-
-.custom-select select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: 1px solid #B8BBC2; 
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #fff;
-    width: 200px;
-    cursor: pointer;
-    
-}
-.custom-select select option {
-    background-color: #fff; /* Couleur de fond */
-   /* color: #333; /* Couleur du texte */
-    /*padding: 10px; /* Espacement interne */
-   /*border: none; /* Retirer la bordure */
-/*}
-
-/* Style des options au survol */
-/*.custom-select select .drop:hover {
-    background-color: #e90a21; /* Couleur de fond au survol */
-   /* color: #fff; /* Couleur du texte au survol */
-/*}
-.selection .drop {
-    line-height: 2em;
-    font-size: 1em;
-
-}
-.custom-select select:focus{
-    outline: #215AFF 1px solid;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.custom-select .select-icon {
-   position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    flex-shrink: 0;
-    padding: 5px;
-    cursor: pointer;
-    z-index: 100;
-}
-
-.custom-select.select .select-icon{
-    transform: translateY(-50%) rotate(180deg); /* Rotation de 180 degrés */
-   
-/*}
-
-/* Style Font Awesome icons */
-/*.select-icon i {
-    font-size: 12px;
-}*/
-
 /*Single page*/
 .single{
     width: 80vw;
@@ -543,3 +486,119 @@ a{
 .single-arrow:hover{
     transform: scaleX(1.8);
 }
+/*Menu mobile*/
+.mobile-menu{
+    display: none;
+}
+/* Styles pour le bouton de menu burger */
+.mobile-menu-button {
+    display: none; /* Cacher le bouton par défaut */
+    cursor: pointer;
+}
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px 0;
+    transition: 0.4s;
+}
+
+/* Styles pour le menu principal */
+.header-menu {
+    display: block;
+}
+
+
+/* Media query pour les écrans de 360px à 700px */
+@media screen and (max-width: 700px) and (min-width: 360px) {
+    main{
+        width: 100%;
+        margin: 0 auto;
+        overflow-x: hidden;
+    }
+    .mobile-menu-button {
+        display: block; /* Afficher le bouton de menu burger */
+        position: relative;
+        text-align: -webkit-right;
+        padding-right: 30px;
+    }
+    .mobile-menu ul{
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        width: 100%;
+        background: #e00000;
+        top: 50px;
+        height: 100vh;
+        align-content: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .mobile-menu li{
+       line-height: 7em;
+    }
+    .mobile-menu li a{
+        color:#fff;
+        font-size: 44px;
+    }
+ 
+    .header-menu {
+        display: none; /* Cacher le menu principal */
+    }
+    .container{
+        justify-content: flex-start;
+
+    }
+    .header-logo img {
+        height: 12px;
+        padding-left: 30px;
+    }
+    .nav-mobile{
+        width: 100%;
+        position: absolute;
+        /*right: 30px;*/
+    }
+    .filtres{
+
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+    }
+    .galerie{
+        margin: 30px auto;
+        gap: 30px;
+        width: 90%;
+    }
+    .hero-title>h1{
+        font-size: 32px;
+    }
+    .container-img {
+        width: 100%;
+       
+    }
+    .photos img{
+        width: 100%;
+        height: 40vh;
+    }
+    .footer-content{
+        width: 100%;
+    }
+    .footer-content ul{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        align-content: center;
+        width: 100%;
+    }
+    .footer-content ul li{
+       line-height: 2.5em;
+    }
+    .container.footer{
+        height: 200px;
+    }
+}
+

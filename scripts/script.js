@@ -292,6 +292,15 @@
     
         // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
         $(this).toggleClass('clicked');});
+
+        $(document).ready(function () {
+            var mobileMenuButton = $('.mobile-menu-button');
+            var mobileMenu = $('.mobile-menu');
+    
+            mobileMenuButton.click(function () {
+                mobileMenu.toggle();
+            });
+        });
     
    })(jQuery);
 

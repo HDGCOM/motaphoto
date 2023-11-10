@@ -16,49 +16,11 @@ get_header()
         </section>
         <section class="galerie">
         <?php
-            // Récupération des catégories personnalisées à partir de CPT UI
+            // Récupération des champs personnalisées à partir de CPT UI et ACF
             $categories = get_terms('categorie');
-
-            // Récupération des formats personnalisés à partir de CPT UI
             $formats = get_terms('format');
             $annees = get_field('annee');
-            
         ?>
-           <!--div class="filtres">
-                <div class="catfor">
-                    <div class="catégories">
-                        <div class="custom-select">
-                            <span class="select-icon"><i class="fas fa-chevron-down"></i></span>
-                            <select class="selection" id="categories-select">
-                                <option class="drop" value="" selected>CATÉGORIES</option>
-                                <?php foreach ($categories as $category) : ?>
-                                    <option class="drop" value="<?php echo esc_attr($category->slug); ?>"><?php echo esc_html($category->name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="formats">
-                        <div class="custom-select">
-                            <span class="select-icon"><i class="fas fa-chevron-down"></i></span>
-                            <select class="selection" id="formats-select">
-                                <option value="" disabled selected>FORMATS</option>
-                                <?php foreach ($formats as $format) : ?>
-                                    <option value="<?php echo esc_attr($format->slug); ?>"><?php echo esc_html($format->name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="trier">
-                    <div class="custom-select">
-                        <span class="select-icon"><i class="fas fa-chevron-down"></i></span>
-                        <select class="selection" id="annee-select">
-                            <option value="" disabled selected>TRIER PAR</option>
-                        </select>
-                    </div>
-                </div>
-           </div-->
-
            <div class="filtres">
                 <div class="categories-dropdown">
 

@@ -22,6 +22,24 @@
                 ));
                 ?>
             </nav>
+                
+            <nav class="nav-mobile">
+                <div class="mobile-menu-button">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <div class="mobile-menu">
+                    <?php
+                    wp_nav_menu(array(
+                        'theme_location' => 'mobile', // Le nom de l'emplacement du menu pour les mobiles
+                        'menu_class' => 'mobil-menu', // Classe CSS pour le menu mobile
+                        'container' => false, // Ne pas inclure de conteneur autour du menu mobile
+                    ));
+                    ?>
+                </div>
+            </nav>
+           
         </div>
     </header>
    
