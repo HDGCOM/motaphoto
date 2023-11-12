@@ -112,7 +112,7 @@ if (have_posts()) :
                 <a href="<?php echo esc_url(get_permalink()); ?>">
                     <i class="fas fa-eye"></i>
                 </a>
-                <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>" data-article-id="<?php echo get_the_ID(); ?>">
+                <a href="#" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>" data-article-id="<?php echo get_the_ID(); ?>">
                     <i class="fas fa-square"></i>
                 </a>
                 <div class="infos">

@@ -1,18 +1,20 @@
 <?php
+    //Prende en charge des images mises en avant
    add_theme_support('post-thumbnails');
 
+    //Menu
    register_nav_menus(
         array(
             'primary' => __('Menu Principal', 'motaphoto'),
             'footer'  => __('Menu Pied de Page', 'motaphoto'),
         )
     );
-
+   
     function register_mobile_menu() {
         register_nav_menu('mobile', __('Mobile Menu'));
     }
     add_action('after_setup_theme', 'register_mobile_menu');
-   
+   //Enqueue scripts
    add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
     function theme_enqueue_styles() {
       wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
@@ -40,7 +42,7 @@
 
     }
 
-    //Modale
+    //Lien modale
     function ajouter_contact_au_menu($items, $args) {
       // Vérifiez s'il s'agit du menu "primary"
       if ($args->theme_location == 'primary' || $args->theme_location == 'mobile') {
@@ -184,7 +186,7 @@ function filter_photos() {
     // Construisez les arguments de requête en fonction des filtres sélectionnés
     $args = array(
         'post_type' => 'photo', // Remplacez 'photo' par le slug de votre type de publication personnalisé
-        'posts_per_page' => 8, // Récupère les 8 premières images
+        'posts_per_page' => -1, // Récupère les images
     );
 
     if (!empty($category)) {
@@ -227,7 +229,7 @@ function filter_photos() {
                 <img class="featured-image" src="<?php echo $image_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>">
                 <?php //the_post_thumbnail('large'); ?>
                 <div class="overlay">
-                    <a href="lien_vers_votre_page_de_redirection">
+                    <a href="<?php echo esc_url(get_permalink()); ?>">
                         <i class="fas fa-eye"></i>
                     </a>
                     <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>">
@@ -309,7 +311,7 @@ function load_more_posts() {
                     <a href="<?php echo esc_url(get_permalink()); ?>">
                         <i class="fas fa-eye"></i>
                     </a>
-                    <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>" data-article-id="<?php echo get_the_ID(); ?>">
+                    <a href="#" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>" data-article-id="<?php echo get_the_ID(); ?>">
                         <i class="fas fa-square"></i>
                     </a>
                     <div class="infos">
@@ -335,91 +337,5 @@ function load_more_posts() {
 
 add_action('wp_ajax_load_more_posts', 'load_more_posts');
 add_action('wp_ajax_nopriv_load_more_posts', 'load_more_posts');
-
-
-/*function load_more_posts() {
-    $offset = sanitize_text_field($_POST['offset']);
-    $posts_per_page = sanitize_text_field($_POST['posts_per_page']);
-    $total_posts = wp_count_posts('photo')->publish;
-    $postsPerPage = 16;
-    $post = get_post();
-
-    // Récupérer le nombre total d'images de la même catégorie
-    $args_total = array(
-        'post_type' => 'photo',
-        'posts_per_page' => -1, // Récupérer toutes les images
-        'tax_query' => array(
-            array(
-                'taxonomy' => 'categorie',
-                'field' => 'id',
-                'terms' => wp_get_post_terms($post->ID, 'categorie', array("fields" => "ids")),
-            ),
-        ),
-    );
-    $total_images_query = new WP_Query($args_total);
-    $totalImages = $total_images_query->post_count;
-
-    // Vérifiez si nous avons déjà chargé toutes les images
-    if ($offset >= $totalImages) {
-        echo 'No more posts to load';
-        wp_die();
-    }
-
-    // Ajustez l'offset pour exclure les deux premières photos
-    $adjusted_offset = $offset + 2;
-
-    $related_args = array(
-        'post_type' => 'photo',
-        'posts_per_page' => $postsPerPage,
-        'offset' => $adjusted_offset,
-    );
-
-    $related_query = new WP_Query($related_args);
-
-    if ($related_query->have_posts()) {
-        while ($related_query->have_posts()) {
-            $related_query->the_post();
-            $related_image_url = get_the_post_thumbnail_url();
-            $image_id = get_post_thumbnail_id();
-            $reference = get_field('reference', $image_id);
-            $categories = get_the_terms(get_the_ID(), 'categorie');
-            $image_annee = get_field('annee', $image_id);
-
-            $thumbnail_data = wp_get_attachment_image_src($image_id, 'thumbnail');
-            $thumbnail_url = $thumbnail_data[0];
-            ?>
-            <div class="container-img">
-                <img src="<?php echo esc_url($related_image_url); ?>" data-thumbnail-src="<?php echo $thumbnail_url; ?>" data-annee="<?php echo esc_attr($image_annee); ?>" data-article-id="<?php echo get_the_ID(); ?>">
-
-                <div class="overlay">
-                    <a href="<?php echo esc_url(get_permalink()); ?>">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    <a href="" class="open-lightbox" data-image-src="<?php echo esc_url(get_the_post_thumbnail_url()); ?>" data-reference="<?php echo esc_attr($reference); ?>" data-categories="<?php echo esc_attr(json_encode($categories)); ?>" data-article-id="<?php echo get_the_ID(); ?>">
-                        <i class="fas fa-square"></i>
-                    </a>
-                    <div class="infos">
-                        <div class="left-ref"><?php echo $reference; ?></div>
-                        <div class="right-cat">
-                            <?php
-                            if ($categories) {
-                                foreach ($categories as $category) {
-                                    echo '<span>' . $category->name . '</span>';
-                                }
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php
-        }
-    }
-
-    wp_die();
-}
-
-add_action('wp_ajax_load_more_posts', 'load_more_posts');
-add_action('wp_ajax_nopriv_load_more_posts', 'load_more_posts');*/
 
 ?>

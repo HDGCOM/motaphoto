@@ -13,7 +13,7 @@
 
         // Fonction pour charger plus d'images via AJAX
         function loadMoreImages() {
-            var newOpenLightboxLinks = document.querySelectorAll(".images-plus .open-lightbox");
+            var newOpenLightboxLinks = document.querySelectorAll(".open-lightbox");
 
             // Initialisez la lightbox avec les nouvelles images
             initializeLightbox(newOpenLightboxLinks);
@@ -112,8 +112,7 @@
                     lightbox.style.display = "none";
                 }
             });
-        
-            //test
+            
             openLightboxLinks = links; // Mettez à jour la variable globale avec les liens
         }
 
@@ -133,7 +132,7 @@
                     },
                     success: function(response) {
                         if (response) {
-                            $('.images-plus').append(response); // Ajoutez les images supplémentaires à la zone "nouvelles-images"
+                            $('.photos').append(response); // Ajoutez les images supplémentaires à la zone "nouvelles-images"
                             offset += 8;
 
                             loadMoreImages();
@@ -172,7 +171,7 @@
                 },
                 success: function(response) {
                     // Mettez à jour la liste de photos avec les résultats de la requête
-                    var photoContainer = $('.filter-photos'); // Remplacez par le sélecteur de votre conteneur de photos
+                    var photoContainer = $('.photos'); // Remplacez par le sélecteur de votre conteneur de photos
                     photoContainer.html(response);
                      // Fermez la liste déroulante après avoir sélectionné une année
                     yearsOptions.slideUp();
@@ -191,6 +190,11 @@
             success: function(response) {
                 var years = JSON.parse(response);
 
+                // Triez le tableau d'années dans l'ordre décroissant
+                years.sort(function(a, b) {
+                    return b - a;
+                });
+
                 // Remplissez la liste déroulante personnalisée avec les années uniques
                 $.each(years, function(index, year) {
                     var yearDiv = $('<div>', {
@@ -198,27 +202,28 @@
                         text: year,
                         "data-year": year,
                     });
-
-                    // Ajoutez un gestionnaire d'événement pour la sélection de l'année
-                    yearDiv.click(function() {
-                        // Mettez à jour la valeur sélectionnée
-                        var selectedYear = $(this).data('year');
-                        $('#selected-annee').text(year);
-                        $('.trier').hide();
-                        
-                        // Vous pouvez ajouter d'autres actions ici en fonction de l'année sélectionnée
-                        // Par exemple, déclencher une requête AJAX pour filtrer les photos. 
-                        filterByYear(selectedYear);
-                        
-                    });
-
-                    yearsOptions.append(yearDiv);
+                    
+                   yearsOptions.append(yearDiv);
                 });
-               
+                // Gestionnaire d'événement pour la sélection d'année
+                $('.annee-option').on('click', function() {
+                    // Supprimez la classe "active" de toutes les options d'année
+                    $('.annee-option').removeClass('active');
+
+                    // Ajoutez la classe "active" à l'option sélectionnée
+                    $(this).addClass('active');
+
+                    var selectedYear = $(this).data('year');
+                    $('#selected-annee').text(selectedYear);
+                    $('.trier').hide();
+                    yearsOptions.slideUp();
+                    handleFilterSelection(getSelectedCategory(), getSelectedFormat(), selectedYear);
+                });
             }
         });
-        
+       
     });
+    
     //Pour les catégories
     $('.selected-category').on('click', function() {
         $('.category-options').slideToggle();
@@ -226,7 +231,7 @@
         $('.selected-category').toggleClass('onclick');
     });
     
-    $('.category-option').on('click', function() {
+    /*$('.category-option').on('click', function() {
         var selectedValue = $(this).data('value');
         var selectedText = $(this).text();
         $('#categories-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
@@ -245,7 +250,8 @@
                 $('.filter-photos').html(response);
             }
         });
-    });
+    });*/
+   
     // Pour les formats
     $('.selected-format').on('click', function() {
         $('.format-options').slideToggle();
@@ -253,7 +259,7 @@
         $('.selected-format').toggleClass('onclick');
     });
 
-    $('.format-option').on('click', function() {
+   /* $('.format-option').on('click', function() {
         var selectedValue = $(this).data('value');
         var selectedText = $(this).text();
         $('#formats-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
@@ -274,7 +280,80 @@
             }
         });
 
+    });*/
+
+    // Fonction pour effectuer la demande AJAX en fonction des filtres sélectionnés
+    function filterPhotos(category, format, year) {
+        $.ajax({
+            type: 'POST',
+            url: custom_script_params.ajaxurl,
+            data: {
+                action: 'filter_photos',
+                category: category,
+                format: format,
+                annee: year,
+            },
+            success: function(response) {
+                $('.photos').html(response);
+            }
+        });
+    }
+
+    // Fonction pour gérer les options sélectionnées et déclencher le filtrage
+    function handleFilterSelection(category, format, year) {
+        filterPhotos(category, format, year);
+
+        //Masquer ou afficher le bouton "Charger plus" en fonction des critères de filtrage
+        var btnPlusContainer = $('.btn-hide');
+
+        if (category || format || year) {
+            // Si au moins un filtre est sélectionné, masquez le bouton "Charger plus"
+            btnPlusContainer.hide();
+        } else {
+            // Sinon, affichez le bouton "Charger plus"
+            btnPlusContainer.show();
+        }
+    }
+
+    // Gestionnaire d'événement pour la sélection de catégorie
+    $('.category-option').on('click', function() {
+        $('.category-option').removeClass('active'); // Supprimez la classe "active" de toutes les options de catégorie
+        $(this).addClass('active'); // Ajoutez la classe "active" à l'option sélectionnée
+
+        var selectedCategory = $(this).data('value');
+        var selectedText = $(this).text();
+        $('#categories-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
+        $('.category-options').slideUp();
+        handleFilterSelection(selectedCategory, getSelectedFormat(), getSelectedYear());
     });
+
+    // Gestionnaire d'événement pour la sélection de format
+    $('.format-option').on('click', function() {
+        $('.format-option').removeClass('active'); // Supprimez la classe "active" de toutes les options de format
+        $(this).addClass('active'); // Ajoutez la classe "active" à l'option sélectionnée
+
+        var selectedFormat = $(this).data('value');
+        var selectedText = $(this).text();
+        $('#formats-select').html(selectedText + '<div class="chevron-down"><i class="fa-solid fa-chevron-down"></i></div>');
+        $('.format-options').slideUp();
+        handleFilterSelection(getSelectedCategory(), selectedFormat, getSelectedYear());
+    });
+
+    // Fonction pour récupérer la catégorie sélectionnée
+    function getSelectedCategory() {
+        return $('.category-option.active').data('value');
+    }
+
+    // Fonction pour récupérer le format sélectionné
+    function getSelectedFormat() {
+        return $('.format-option.active').data('value');
+    }
+
+    // Fonction pour récupérer l'année sélectionnée
+    function getSelectedYear() {
+        return $('.annee-option.active').data('year');
+    }
+    
     //Visited red
     $(document).ready(function() {
         $('.category-option, .format-option').click(function() {
@@ -289,7 +368,6 @@
     $('#annee-options').on('click', '.annee-option', function() {
         // Supprimer la classe 'clicked' de tous les éléments sauf celui sur lequel vous avez cliqué
         $('.annee-option').not(this).removeClass('clicked');
-    
         // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
         $(this).toggleClass('clicked');
     });
@@ -316,6 +394,6 @@
             });
         });
     });
-    
-   })(jQuery);
+
+})(jQuery);
 

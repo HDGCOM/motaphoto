@@ -24,7 +24,7 @@ get_header()
            <div class="filtres">
                 <div class="categories-dropdown">
 
-                    <div class="selected-category selection" id="categories-select">
+                    <div class="selected-category selection categoriesselect" id="categories-select">
                         CATÉGORIES
                         <div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>
                     </div>
@@ -38,7 +38,7 @@ get_header()
                 </div>
 
                 <div class="formats-dropdown">
-                    <div class="selected-format selection" id="formats-select">
+                    <div class="selected-format selection formatsselect " id="formats-select">
                         FORMATS
                         <div class="chevron-down"><i class="fa-solid fa-chevron-down"></i></div>
                     </div>
@@ -53,7 +53,7 @@ get_header()
                
                 <div class="annees-dropdown" id="">
                     
-                    <div class="selected-annee selection" id="">
+                    <div class="selected-annee selection anneeselect" id="">
                         <span id="selected-annee"></span>
                         <span class="trier">TRIER PAR</span>
                         <div class="down-chevron"><i class="fa-solid fa-chevron-down"></i></div>
@@ -117,15 +117,10 @@ get_header()
                         endwhile;
                         wp_reset_postdata();
                     endif;
-
-                    
-                    
                 ?>
-
-
             </div>
-            <div class="images-plus photos"></div>
-            <button class="btn-plus" id="charger">Charger plus</button>
+            <div class="images-plus "></div>
+            <button class="btn-plus btn-hide" id="charger">Charger plus</button>
         </section>
 
     </main>

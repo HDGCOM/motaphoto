@@ -83,7 +83,7 @@ a{
     position: absolute;
     top:0;
     left:0;
-    margin: 30px 0;
+    /*margin: 30px 0;*/
 }
 .wpcf7-form-control{
     width: 265px;
