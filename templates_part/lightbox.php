@@ -11,7 +11,5 @@
             </div>
         </div>
         <button class="lightbox__next" id="next-button">Suivant</button>
-        
     </div>
-    
 </div>

@@ -21,9 +21,8 @@ get_header()
             $formats = get_terms('format');
             $annees = get_field('annee');
         ?>
-           <div class="filtres">
+            <div class="filtres">
                 <div class="categories-dropdown">
-
                     <div class="selected-category selection categoriesselect" id="categories-select">
                         CATÉGORIES
                         <div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>
@@ -65,7 +64,7 @@ get_header()
                 </div> 
                      
             </div>
-            <div class="photos filter-photos">
+            <div class="photos">
                 <?php
                     $args = array(
                         'post_type' => 'photo', // Remplacez 'photo' par le slug de votre type de publication personnalisé

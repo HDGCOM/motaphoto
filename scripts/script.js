@@ -1,7 +1,7 @@
 (function($) {
     jQuery(document).ready(function($) {
         // Ouvrir la modal lorsque le lien est cliqué
-        $(/*'#open-modal-link'*/ '.item-open-modal').click(function(e) {
+        $('.item-open-modal').click(function(e) {
             e.preventDefault();
             $('#open-modal').fadeIn();
         });
@@ -13,10 +13,10 @@
 
         // Fonction pour charger plus d'images via AJAX
         function loadMoreImages() {
-            var newOpenLightboxLinks = document.querySelectorAll(".open-lightbox");
+            var openLightboxLinks = document.querySelectorAll(".open-lightbox");
 
             // Initialisez la lightbox avec les nouvelles images
-            initializeLightbox(newOpenLightboxLinks);
+           initializeLightbox(openLightboxLinks);
         }
 
         // Lightbox
@@ -66,8 +66,8 @@
         
             const lightboxReference = document.getElementById("lightbox-reference");
             const lightboxCategories = document.getElementById("lightbox-categories");
-            
             const rightCat = document.querySelector(".cat");
+
             let currentIndex = 0;
             prevButton.addEventListener("click", function () {
                 if (currentIndex > 0) {
@@ -116,6 +116,10 @@
             openLightboxLinks = links; // Mettez à jour la variable globale avec les liens
         }
 
+        // Au chargement de la page, initialisez la lightbox pour les liens existants
+         const initialOpenLightboxLinks = document.querySelectorAll(".open-lightbox");
+         initializeLightbox(initialOpenLightboxLinks);
+ 
         // Ajax charger plus
         var offset = 8;
         var canLoadMore = true; // Vous pouvez charger plus d'images
@@ -144,12 +148,6 @@
                 });
             }
         });
-
-        // Au chargement de la page, initialisez la lightbox pour les liens existants
-        const initialOpenLightboxLinks = document.querySelectorAll(".open-lightbox");
-        initializeLightbox(initialOpenLightboxLinks);
-        
-        // Trier par années
         
         $('.selected-annee').on('click', function() {
             $('.annee-options').slideToggle();
@@ -221,179 +219,135 @@
                 });
             }
         });
-       
-    });
-    
-    //Pour les catégories
-    $('.selected-category').on('click', function() {
-        $('.category-options').slideToggle();
-        $('.chevron').toggleClass('rotate');
-        $('.selected-category').toggleClass('onclick');
-    });
-    
-    /*$('.category-option').on('click', function() {
-        var selectedValue = $(this).data('value');
-        var selectedText = $(this).text();
-        $('#categories-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
-        $('.category-options').slideUp();
-    
-        // Effectuez la demande AJAX pour mettre à jour les images en fonction des filtres
-        $.ajax({
-            type: 'POST',
-            url: custom_script_params.ajaxurl, // URL AJAX définie par WordPress
-            data: {
-                action: 'filter_photos',
-                category: selectedValue,
-            },
-            success: function(response) {
-                // Mettez à jour la div ".photos" avec les nouvelles images
-                $('.filter-photos').html(response);
-            }
+
+        //Pour les catégories
+        $('.selected-category').on('click', function() {
+            $('.category-options').slideToggle();
+            $('.chevron').toggleClass('rotate');
+            $('.selected-category').toggleClass('onclick');
         });
-    });*/
-   
-    // Pour les formats
-    $('.selected-format').on('click', function() {
-        $('.format-options').slideToggle();
-        $('.chevron-down').toggleClass('rotation');
-        $('.selected-format').toggleClass('onclick');
-    });
-
-   /* $('.format-option').on('click', function() {
-        var selectedValue = $(this).data('value');
-        var selectedText = $(this).text();
-        $('#formats-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
-        $('.format-options').slideUp();
-        
-
-        // Effectuez la demande AJAX pour mettre à jour les images en fonction des filtres
-        $.ajax({
-            type: 'POST',
-            url: custom_script_params.ajaxurl, // URL AJAX définie par WordPress
-            data: {
-                action: 'filter_photos',
-                format: selectedValue, 
-            },
-            success: function(response) {
-                // Mettez à jour la div ".photos" avec les nouvelles images
-                $('.filter-photos').html(response);
-            }
+    
+        // Pour les formats
+        $('.selected-format').on('click', function() {
+            $('.format-options').slideToggle();
+            $('.chevron-down').toggleClass('rotation');
+            $('.selected-format').toggleClass('onclick');
         });
-
-    });*/
-
-    // Fonction pour effectuer la demande AJAX en fonction des filtres sélectionnés
-    function filterPhotos(category, format, year) {
-        $.ajax({
-            type: 'POST',
-            url: custom_script_params.ajaxurl,
-            data: {
-                action: 'filter_photos',
-                category: category,
-                format: format,
-                annee: year,
-            },
-            success: function(response) {
-                $('.photos').html(response);
-            }
-        });
-    }
-
-    // Fonction pour gérer les options sélectionnées et déclencher le filtrage
-    function handleFilterSelection(category, format, year) {
-        filterPhotos(category, format, year);
-
-        //Masquer ou afficher le bouton "Charger plus" en fonction des critères de filtrage
-        var btnPlusContainer = $('.btn-hide');
-
-        if (category || format || year) {
-            // Si au moins un filtre est sélectionné, masquez le bouton "Charger plus"
-            btnPlusContainer.hide();
-        } else {
-            // Sinon, affichez le bouton "Charger plus"
-            btnPlusContainer.show();
+    
+        // Fonction pour effectuer la demande AJAX en fonction des filtres sélectionnés
+        function filterPhotos(category, format, year) {
+            $.ajax({
+                type: 'POST',
+                url: custom_script_params.ajaxurl,
+                data: {
+                    action: 'filter_photos',
+                    category: category,
+                    format: format,
+                    annee: year,
+                },
+                success: function(response) {
+                    $('.photos').html(response);
+                }
+            });
         }
-    }
 
-    // Gestionnaire d'événement pour la sélection de catégorie
-    $('.category-option').on('click', function() {
-        $('.category-option').removeClass('active'); // Supprimez la classe "active" de toutes les options de catégorie
-        $(this).addClass('active'); // Ajoutez la classe "active" à l'option sélectionnée
+        // Fonction pour gérer les options sélectionnées et déclencher le filtrage
+        function handleFilterSelection(category, format, year) {
+            filterPhotos(category, format, year);
 
-        var selectedCategory = $(this).data('value');
-        var selectedText = $(this).text();
-        $('#categories-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
-        $('.category-options').slideUp();
-        handleFilterSelection(selectedCategory, getSelectedFormat(), getSelectedYear());
-    });
+            //Masquer ou afficher le bouton "Charger plus" en fonction des critères de filtrage
+            var btnPlusContainer = $('.btn-hide');
 
-    // Gestionnaire d'événement pour la sélection de format
-    $('.format-option').on('click', function() {
-        $('.format-option').removeClass('active'); // Supprimez la classe "active" de toutes les options de format
-        $(this).addClass('active'); // Ajoutez la classe "active" à l'option sélectionnée
+            if (category || format || year) {
+                // Si au moins un filtre est sélectionné, masquez le bouton "Charger plus"
+                btnPlusContainer.hide();
+            } else {
+                // Sinon, affichez le bouton "Charger plus"
+                btnPlusContainer.show();
+            }
+        }
 
-        var selectedFormat = $(this).data('value');
-        var selectedText = $(this).text();
-        $('#formats-select').html(selectedText + '<div class="chevron-down"><i class="fa-solid fa-chevron-down"></i></div>');
-        $('.format-options').slideUp();
-        handleFilterSelection(getSelectedCategory(), selectedFormat, getSelectedYear());
-    });
+        // Gestionnaire d'événement pour la sélection de catégorie
+        $('.category-option').on('click', function() {
+            $('.category-option').removeClass('active'); // Supprimez la classe "active" de toutes les options de catégorie
+            $(this).addClass('active'); // Ajoutez la classe "active" à l'option sélectionnée
 
-    // Fonction pour récupérer la catégorie sélectionnée
-    function getSelectedCategory() {
-        return $('.category-option.active').data('value');
-    }
+            var selectedCategory = $(this).data('value');
+            var selectedText = $(this).text();
+            $('#categories-select').html(selectedText + '<div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>');
+            $('.category-options').slideUp();
+            handleFilterSelection(selectedCategory, getSelectedFormat(), getSelectedYear());
+        });
 
-    // Fonction pour récupérer le format sélectionné
-    function getSelectedFormat() {
-        return $('.format-option.active').data('value');
-    }
+        // Gestionnaire d'événement pour la sélection de format
+        $('.format-option').on('click', function() {
+            $('.format-option').removeClass('active'); // Supprimez la classe "active" de toutes les options de format
+            $(this).addClass('active'); // Ajoutez la classe "active" à l'option sélectionnée
 
-    // Fonction pour récupérer l'année sélectionnée
-    function getSelectedYear() {
-        return $('.annee-option.active').data('year');
-    }
-    
-    //Visited red
-    $(document).ready(function() {
-        $('.category-option, .format-option').click(function() {
+            var selectedFormat = $(this).data('value');
+            var selectedText = $(this).text();
+            $('#formats-select').html(selectedText + '<div class="chevron-down"><i class="fa-solid fa-chevron-down"></i></div>');
+            $('.format-options').slideUp();
+            handleFilterSelection(getSelectedCategory(), selectedFormat, getSelectedYear());
+        });
+
+        // Fonction pour récupérer la catégorie sélectionnée
+        function getSelectedCategory() {
+            return $('.category-option.active').data('value');
+        }
+
+        // Fonction pour récupérer le format sélectionné
+        function getSelectedFormat() {
+            return $('.format-option.active').data('value');
+        }
+
+        // Fonction pour récupérer l'année sélectionnée
+        function getSelectedYear() {
+            return $('.annee-option.active').data('year');
+        }
+        
+        //Visited red
+        $(document).ready(function() {
+            $('.category-option, .format-option').click(function() {
+                // Supprimer la classe 'clicked' de tous les éléments sauf celui sur lequel vous avez cliqué
+                $('.category-option, .format-option').not(this).removeClass('clicked');
+                
+                // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
+                $(this).toggleClass('clicked');
+            });
+        });
+
+        $('#annee-options').on('click', '.annee-option', function() {
             // Supprimer la classe 'clicked' de tous les éléments sauf celui sur lequel vous avez cliqué
-            $('.category-option, .format-option').not(this).removeClass('clicked');
-            
+            $('.annee-option').not(this).removeClass('clicked');
             // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
             $(this).toggleClass('clicked');
         });
-    });
 
-    $('#annee-options').on('click', '.annee-option', function() {
-        // Supprimer la classe 'clicked' de tous les éléments sauf celui sur lequel vous avez cliqué
-        $('.annee-option').not(this).removeClass('clicked');
-        // Ajouter ou supprimer la classe 'clicked' sur l'élément cliqué
-        $(this).toggleClass('clicked');
-    });
+        $(document).ready(function () {
+            var mobileMenuButton = $('.mobile-menu-button');
+            var mobileMenu = $('.mobile-menu');
 
-    $(document).ready(function () {
-        var mobileMenuButton = $('.mobile-menu-button');
-        var mobileMenu = $('.mobile-menu');
+            mobileMenuButton.click(function () {
+                mobileMenu.toggle();
+                mobileMenuButton.toggleClass('open');
+            });
 
-        mobileMenuButton.click(function () {
-            mobileMenu.toggle();
-            mobileMenuButton.toggleClass('open');
-        });
+            //  Gérer le clic sur les liens du menu
+            $('.mobile-menu a').click(function (e) {
+                e.preventDefault(); // Empêche le comportement de lien par défaut
 
-        //  Gérer le clic sur les liens du menu
-        $('.mobile-menu a').click(function (e) {
-            e.preventDefault(); // Empêche le comportement de lien par défaut
+                var targetPage = $(this).attr('href');
 
-            var targetPage = $(this).attr('href');
-
-            // Fermez le menu avec un fondu et redirigez vers la page cible
-            mobileMenu.fadeOut(400, function () {
-                mobileMenuButton.removeClass('open'); 
-                window.location.href = targetPage;
+                // Fermez le menu avec un fondu et redirigez vers la page cible
+                mobileMenu.fadeOut(400, function () {
+                    mobileMenuButton.removeClass('open'); 
+                    window.location.href = targetPage;
+                });
             });
         });
+       
     });
-
+      
 })(jQuery);
 

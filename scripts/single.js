@@ -1,77 +1,3 @@
-/*jQuery(document).ready(function($) {
-
-    // Sélectionnez le conteneur des miniatures
-    var thumbnailsContainer = $('.thumbnails-container');
-
-    // Récupérez les images 
-    var originalImages = document.querySelectorAll(".container-img img");
-
-    // Index de l'image actuellement affichée
-    var currentIndex = 0;
-
-    // Sélectionnez les liens "Précédent" et "Suivant"
-    var prevLink = $('.nav-link.prev');
-    var nextLink = $('.nav-link.next');
-
-    // Fonction pour afficher l'image au survol du lien
-    function showImageOnHover(index) {
-        thumbnailsContainer.html(""); // Effacez les miniatures actuelles
-        thumbnailsContainer.append(originalImages[index].cloneNode(true));
-    }
-
-    // Réinitialiser l'affichage lorsque la souris quitte le lien "Précédent"
-    prevLink.mouseenter(function() {
-        showImageOnHover(currentIndex);
-    });
-
-    // Associez la fonction d'affichage au survol des liens "Précédent" et "Suivant"
-    prevLink.mouseenter(function() {
-        if (currentIndex > 0) {
-            showImageOnHover(currentIndex - 1);
-        }
-    });
-
-    nextLink.mouseenter(function() {
-        if (currentIndex < originalImages.length - 1) {
-            showImageOnHover(currentIndex + 1);
-        }
-    });
-
-    // Ajoutez des liens autour des images originales pour les rendre cliquables
-    // Redirigez vers l'article correspondant en cliquant sur le lien "Suivant"
-nextLink.click(function(e) {
-    e.preventDefault();
-    if (currentIndex < originalImages.length - 1) {
-        currentIndex++;
-        var articleId = originalImages[currentIndex].getAttribute("data-article-id");
-        if (articleId) {
-            var articleLink = articleData.articleLink; // Utilisez la variable articleLink passée depuis PHP
-            if (articleLink) {
-                // Redirigez vers l'article de l'image suivante
-                window.location.href = articleLink;
-            }
-        }
-    }
-});
-
-// Redirigez vers l'article correspondant en cliquant sur le lien "Précédent"
-prevLink.click(function(e) {
-    e.preventDefault();
-    if (currentIndex > 0) {
-        currentIndex--;
-        var articleId = originalImages[currentIndex].getAttribute("data-article-id");
-        if (articleId) {
-            var articleLink = articleData.articleLink; // Utilisez la variable articleLink passée depuis PHP
-            if (articleLink) {
-                // Redirigez vers l'article de l'image précédente
-                window.location.href = articleLink;
-            }
-        }
-    }
-});
-
-});*/
-
 jQuery(document).ready(function($) {
 
     // Sélectionnez le conteneur des miniatures
@@ -191,6 +117,16 @@ jQuery(document).ready(function($) {
             $(this).closest('.modal').hide();
         });
     });
+
+     // Fonction pour charger plus d'images via AJAX
+     function loadMoreImages() {
+        var openLightboxLinks = document.querySelectorAll(".open-lightbox");
+
+        // Initialisez la lightbox avec les nouvelles images
+       initializeLightbox(openLightboxLinks);
+    }
+
+    
     
 });
 
